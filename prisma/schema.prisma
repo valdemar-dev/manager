@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// USERS
+model User {
+  id    String  @id @default(uuid())
+  username String @unique
+  email String  @unique
+  password String
+
+  accounts Account[]
+  notepads Notepad[]
+  tasks    Task[]
+  sessions Session[]
+}
+
+
+//ACCOUNTS
+
+//users can store their account credentials from different services
+//data is encrypted first in the browser before it's sent off to the 
+//server, and also on the server side 
+model Account {
+  id              String     @id @default(uuid())
+  accountUsername String
+  accountEmail    String?
+  accountService  String
+  accountPassword String
+
+  user            User      @relation(fields: [userId], references: [id])
+  userId          String    
+}
+
+//NOTES
+
+//user writes text documents and it gets saved into the /notepads directory
+//at the root directory of the project
+//metadata of the file contains the notepads id
+//when the uses first saves the notepad is creates a notepad object
+//in the postgresql database that contains the notepads id along with
+//who wrote it. this allows the user to come back and re-edit the file
+//and also lets me encrypt it and keep it hidden from everyone else
+model Notepad {
+  id              Int     @id @default(autoincrement())
+
+  user            User    @relation(fields: [userId], references: [id])
+  userId          String
+}
+
+//TASKS
+model Task {
+  id              Int     @id @default(autoincrement())
+
+  taskName        String
+  taskDescription String?
+  taskCompleteBy  DateTime?
+
+  user            User    @relation(fields: [userId], references: [id])
+  userId          String
+}
+
+
+//PROJECT MANAGEMENT
+
+
+//CONTACTS
+
+
+
+//SESSIONS
+model Session {
+  id              String    @id
+  sessionBrowser  String
+  os              String
+  userIp          String    
+  createdAt       DateTime  @default(now())
+  lastActive      DateTime  @default(now())
+
+  user            User      @relation(fields: [userId], references: [id])
+  userId          String    
+}
