@@ -38,7 +38,7 @@ export default function Login() {
         alert(await response.text())
       }
 
-      // router.push("/home");
+      router.push("/dashboard");
     })
   }
 

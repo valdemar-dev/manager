@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       userId: userInDb.id,
     },
     orderBy: {
-      createdAt: 'asc',
+      lastActive: 'asc',
     },
   });
 
@@ -70,9 +70,7 @@ export async function POST(request: NextRequest) {
       },
     });
   }
-
-  console.log(sessions.length);
-  
+ 
   const sessionId = crypto.randomBytes(16).toString("hex");
 
   await prisma.user.update({

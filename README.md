@@ -11,3 +11,4 @@ Run ```npm install --save && npm run dev```.
 | Util     | Input   | Output        |
 | -------- | ------- | -------       |
 | hashText | `string`| `sha256 hash` | 
+| getSession | `sessionId` | `session object` |
