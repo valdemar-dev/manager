@@ -21,8 +21,10 @@ module.exports = {
       'primary-darker': '#c2bcb4',
       'secondary': '#E3E5E8',
       'secondary-darker': '#D3D5D8',
-      'accent': '#30374C',
+      'accent': '#151821',
     }
   },
-  plugins: [],
+  plugins: [
+    require("tailwindcss-animation-delay"),
+  ],
 }

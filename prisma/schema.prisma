@@ -36,6 +36,7 @@ model Account {
   accountEmail    String?
   accountService  String
   accountPassword String
+  encryptionIv    String
 
   user            User      @relation(fields: [userId], references: [id])
   userId          String    

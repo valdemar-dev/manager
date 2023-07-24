@@ -10,7 +10,7 @@ export default function Account() {
   useEffect(() => {
     fetch("/api/user/getSessionList").then(async (res) => {
       if (!res.ok) {
-        return router.push("/account/login");
+        return router.push("/user/login");
       }
 
       setSessions(await res.json());

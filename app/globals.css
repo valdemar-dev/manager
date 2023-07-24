@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+section {
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+.unobstructive {
+  opacity: 70%;
+}
+
+input:focus {
+  outline: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0%;
+    transform: translateY(100%);
+  } 
+
+  to {
+    opacity: 100%;
+    transform: translateY(0%);
+  }
+}

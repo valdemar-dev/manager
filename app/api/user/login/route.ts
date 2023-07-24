@@ -19,9 +19,9 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  const username = hashText(req.username).output;
-  const email = hashText(req.email).output;
-  const password = hashText(req.password).output;
+  const username: string = hashText(req.username).output;
+  const email: string = hashText(req.email).output;
+  const password: string = hashText(req.password).output;
 
   const userInDb = await prisma.user.findFirst({
     where: {

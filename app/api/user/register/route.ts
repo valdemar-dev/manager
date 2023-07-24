@@ -19,10 +19,10 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  const username = hashText(req.username).output;
-  const email = hashText(req.email).output;
-  const password = hashText(req.password).output;
-
+  const username: string = hashText(req.username).output;
+  const email: string = hashText(req.email).output;
+  const password: string = hashText(req.password).output;
+  
   const userInDb = await prisma.user.findFirst({
     where: {
       OR: [
@@ -81,5 +81,5 @@ export async function POST(request: NextRequest) {
   const cookieStore = cookies();
   cookieStore.set("sessionId", sessionId)
 
-  return new Response("Account created!")
+  return new Response("Registered account!")
 }
