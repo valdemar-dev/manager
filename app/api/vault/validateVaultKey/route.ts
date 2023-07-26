@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
   }) || null;
 
   if (!userInDb) {
-    return new Response("Invalid passphrase!", {
-      status: 401,
+    return new Response("Incorrect password! Try again.", {
+      status: 403,
     });
   }
 

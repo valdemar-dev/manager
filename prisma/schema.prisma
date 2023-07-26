@@ -17,6 +17,7 @@ model User {
   username String @unique
   email String  @unique
   password String
+  vaultEntryTotal Int @default(0)
 
   accounts Account[]
   notepads Notepad[]
@@ -31,15 +32,21 @@ model User {
 //data is encrypted first in the browser before it's sent off to the 
 //server, and also on the server side 
 model Account {
-  id              String     @id @default(uuid())
-  accountUsername String
-  accountEmail    String?
-  accountService  String
-  accountPassword String
-  encryptionIv    String
-
-  user            User      @relation(fields: [userId], references: [id])
-  userId          String    
+  id                       String     @id @default(uuid())
+  accountUsername          String?
+  accountEmail             String?
+  accountService           String
+  accountPassword          String
+  iv                       String
+  usernameAuthTag          String
+  emailAuthTag             String
+  passwordAuthTag          String
+  serviceAuthTag           String
+  creationTimestamp        String
+  creationTimestampAuthTag String
+  
+  user                     User      @relation(fields: [userId], references: [id])
+  userId                   String    
 }
 
 //NOTES

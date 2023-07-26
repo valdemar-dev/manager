@@ -3,10 +3,33 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { FormEvent, HtmlHTMLAttributes, useEffect, useRef, useState } from "react";
+import { Doughnut } from "react-chartjs-2";
+import { Chart, ArcElement, Tooltip } from "chart.js";
+import copy from "copy-to-clipboard";
+import crypto from "crypto";
+
+declare const window: any;
+
+Chart.register(ArcElement, Tooltip);
 
 export default function Vault() {
   const router = useRouter();
+
+  const [entryTotal, setEntryTotal] = useState(0);
+  const [accounts, setAccounts] = useState<any[]>([]);
+
+  const decrypt = (encryptedText: string, key: string, iv: string, tag: string) => {
+    const encryptedTextBuffer = Buffer.from(encryptedText, "hex");
+    
+    const decipher = crypto.createDecipheriv("aes-256-gcm", Buffer.from(key), Buffer.from(iv, "hex"));
+    decipher.setAuthTag(Buffer.from(tag, "hex"))
+    
+    let decryptedText = decipher.update(encryptedTextBuffer);
+    decryptedText = Buffer.concat([decryptedText, decipher.final()]);
+
+    return decryptedText.toString("utf-8");
+  };
 
   useEffect(() => {
     const vaultKey = sessionStorage.getItem("vaultKey");
@@ -14,88 +37,125 @@ export default function Vault() {
     if (!vaultKey) {
       return router.replace("/vault/auth");
     }
+
+    fetch("/api/vault/getAccounts").then(async (response) => {
+      if (!response.ok) {
+        return;
+      }
+
+      const res = await response.json();
+      
+      res.accounts.forEach((account: any) => {
+        account.accountUsername = decrypt(account.accountUsername, vaultKey, account.iv, account.usernameAuthTag);
+        account.accountEmail = decrypt(account.accountEmail, vaultKey, account.iv, account.emailAuthTag);
+        account.accountPassword = decrypt(account.accountPassword, vaultKey, account.iv, account.passwordAuthTag);
+        account.accountService = decrypt(account.accountService, vaultKey, account.iv, account.serviceAuthTag);
+      });
+
+      const accounts = [];
+
+      // we only want to show the first 5 accounts
+      for (let i = 0; i < res.accounts.length; ++i) {
+        if (i === 5) break;
+
+        accounts.push(res.accounts[i]);
+      }
+    
+      setAccounts(accounts);
+      setEntryTotal(res.vaultEntryTotal || 0);
+    })
   }, []);
 
-  return (
-    <main className="bg-background min-h-screen overflow-hidden text-text p-4 pt-12 box-border flex flex-col gap-1">
-      { /* navigation menu */}
-      <div className="absolute top-2 flex justify-end gap-2">
-        <Link href="/dashboard" className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2 fadeIn animation-delay-400">
-          <Image src={"/back.svg"} height={"22"} width={"22"} alt={"home button"}/>
-        </Link>
-      </div>
+  const doughnutData = {
+    labels: ["Used", "Available"],
+    datasets: [
+      {
+        label: "Entries",
+        data: [entryTotal, (200 - entryTotal)],
+        backgroundColor: [
+          "#252831",
+          "#D3D5D8",
+        ],
+      },
+    ],
+  }
 
-      <div className="h-1"></div>
-      <h1 className="text-4xl font-semibold fadeIn">The Vault</h1>
-      <p className="fadeIn animation-delay-600">All your data, kept safe.</p>
+  const doughnutOptions = {
+    elements: {
+      arc: {
+        weight: 0,
+        borderWidth: 0,
+      },
+    },
+    cutout: 35,
+  };
+
+  const mapAccounts = () => {
+    if (accounts.length < 1) {
+      return (
+        <div>No accounts found.</div>
+      )
+    }
+
+    return accounts.map((account) => {
+      return (
+        <div className="flex-grow flex items-center gap-2 bg-secondary-darker px-3 py-2 rounded-lg" key={account.id}>
+          <span className="mr-auto text-lg">{account.accountService}</span> 
+          <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-2" onClick={() => {copy(account.accountPassword)}}>
+            <Image src={"/password.svg"} height={"18"} width={"18"} alt={"password icon"}/>
+          </button>
+          <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-2" onClick={() => {copy(account.accountUsername)}}>
+            <Image src={"/username.svg"} height={"18"} width={"18"} alt={"username icon"}/>
+          </button>
+          <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-2" onClick={() => {copy(account.accountEmail)}}>
+            <Image src={"/email.svg"} height={"18"} width={"18"} alt={"email icon"}/>
+          </button>
+        </div>
+      )
+    })
+  };
+
+  return (
+    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 pt-12 box-border">
+      { /* navigation menu */}
+      <div className="absolute top-3 items-center left-4 right-4 flex gap-2">
+        <Link href="/dashboard" className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2 fadeIn animation-delay-400">
+          <Image src={"/home.svg"} height={"22"} width={"22"} alt={"home button"}/>
+        </Link>
+        <span className="font-semibold ml-auto text-lg fadeIn">ManagerX</span>
+      </div>
 
       <div className="h-10"></div>
 
-      {/* accounts list */}
-      <section className="bg-primary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1100">
-        <h3 className="text-xl font-semibold mb-2">Accounts</h3>
-        <div className="flex items-center gap-2 bg-primary-darker px-3 py-2 rounded-lg">
-          <span className="mr-auto text-lg">Google</span> 
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/password.svg"} height={"18"} width={"18"} alt={"password icon"}/>
-          </button>
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/username.svg"} height={"18"} width={"18"} alt={"username icon"}/>
-          </button>
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/email.svg"} height={"18"} width={"18"} alt={"email icon"}/>
-          </button>
-        </div>
-        <div className="flex items-center gap-2 bg-primary-darker px-3 py-2 rounded-lg">
-          <span className="mr-auto text-lg">Namecheap</span> 
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/password.svg"} height={"18"} width={"18"} alt={"password icon"}/>
-          </button>
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/username.svg"} height={"18"} width={"18"} alt={"username icon"}/>
-          </button>
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/email.svg"} height={"18"} width={"18"} alt={"email icon"}/>
-          </button>
-        </div>
-        <div className="flex items-center gap-2 bg-primary-darker px-3 py-2 rounded-lg">
-          <span className="mr-auto text-lg">Discord</span> 
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/password.svg"} height={"18"} width={"18"} alt={"password icon"}/>
-          </button>
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/username.svg"} height={"18"} width={"18"} alt={"username icon"}/>
-          </button>
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/email.svg"} height={"18"} width={"18"} alt={"email icon"}/>
-          </button>
-        </div>
-        <div className="flex items-center gap-2 bg-primary-darker px-3 py-2 rounded-lg">
-          <span className="mr-auto text-lg">Discord</span> 
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/password.svg"} height={"18"} width={"18"} alt={"password icon"}/>
-          </button>
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/username.svg"} height={"18"} width={"18"} alt={"username icon"}/>
-          </button>
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/email.svg"} height={"18"} width={"18"} alt={"email icon"}/>
-          </button>
-        </div>
-        <div className="flex items-center gap-2 bg-primary-darker px-3 py-2 rounded-lg">
-          <span className="mr-auto text-lg">Spotify</span> 
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/password.svg"} height={"18"} width={"18"} alt={"password icon"}/>
-          </button>
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/username.svg"} height={"18"} width={"18"} alt={"username icon"}/>
-          </button>
-          <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2">
-            <Image src={"/email.svg"} height={"18"} width={"18"} alt={"email icon"}/>
-          </button>
-        </div>
-        <a href="/vault/accounts" className="mt-2 text-accent font-semibold">Go to Accounts</a>
-      </section>
+      <div>
+        <h1 className="text-4xl font-semibold fadeIn animation-delay-400">The Vault</h1>
+        <p className="fadeIn animation-delay-800">All your data, kept safe.</p>
+      </div>
+
+      <div className="h-10"></div>
+
+      <div className="grid md:grid-cols-2 gap-10">
+        <section className="bg-primary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200 h-min">
+          <h3 className="text-xl font-semibold">Usage</h3>
+          <div className="relative flex flex-row">
+            <div className="w-1/2 flex flex-col mr-4">
+              <p className="unobstructive">Accounts and contacts are worth 1 entry each.</p>
+              <p className="text-lg pt-2 mt-auto">{entryTotal} / 200 entries.</p>
+            </div>
+
+            <div className="w-1/3 mr-4 ml-auto">
+              <Doughnut className="" data={doughnutData} options={doughnutOptions}/>
+            </div>
+          </div>
+        </section>
+
+        {/* accounts list */}
+        <section className="bg-secondary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400 h-min">
+          <h3 className="text-xl font-semibold mb-2">Accounts</h3>
+          {mapAccounts()}
+          <Link href="/vault/accounts" className="mt-2 text-accent font-semibold">View All</Link>
+        </section>
+      </div>
     </main>
   )
 }
