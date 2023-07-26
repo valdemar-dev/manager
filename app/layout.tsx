@@ -18,9 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {children}
-        <div className="mt-2">
-          <p className="text-xs unobstructive fadeIn animation-delay-3000 ml-4 py-4">Copyright © 2023 All rights reserved</p>
-        </div>
+          <p className="text-xs unobstructive ml-4 py-4">Copyright © 2023 All rights reserved</p>
       </body>
     </html>
   )

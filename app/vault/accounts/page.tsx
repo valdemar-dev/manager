@@ -223,9 +223,9 @@ export default function Accounts() {
   };
 
   return (
-    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 pt-12 box-border">
+    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 box-border">
       { /* navigation menu */}
-      <div className="absolute top-3 items-center left-4 right-4 flex gap-2">
+      <div className="items-center flex gap-2">
         <Link href="/vault" className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2 fadeIn animation-delay-400">
           <Image src={"/back.svg"} height={"22"} width={"22"} alt={"back button"}/>
         </Link>
