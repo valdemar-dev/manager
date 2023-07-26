@@ -118,7 +118,7 @@ export default function Account() {
           </div>
         </section>
 
-        <section className="bg-primary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200 h-min">
+        <section className="bg-primary max-w-full shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200 h-min">
           <h3 className="text-xl font-semibold mb-2">Sessions</h3>
           {sessions.map((session) => {
             return (
@@ -131,10 +131,10 @@ export default function Account() {
                 </div>
                 Last active: {new Date(session.lastActive).toLocaleString()}
                 
-                <div className="break-words">
-                  <details className="break-words">
+                <div className="break-words overflow-hidden">
+                  <details className="break-words overflow-hidden">
                     <summary>Click to show IP</summary>
-                    {session.userIp}
+                    <span className="break-all">{session.userIp}</span>
                   </details>
                 </div>
 
