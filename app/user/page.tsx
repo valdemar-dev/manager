@@ -132,7 +132,7 @@ export default function Account() {
                 Last active: {new Date(session.lastActive).toLocaleString()}
                 
                 <div>
-                  <details>
+                  <details className="break-words">
                     <summary>Click to show IP</summary>
                     {session.userIp}
                   </details>
