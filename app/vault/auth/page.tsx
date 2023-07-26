@@ -63,7 +63,7 @@ export default function VaultAuth() {
 
       <div className="h-10"></div>
 
-      <h1 className="text-2xl font-semibold fadeIn">Hold on!</h1>
+      <h1 className="text-2xl font-semibold fadeIn animation-delay-400">Hold on!</h1>
       <p className="flex items-center gap-2 text-lg mb-6 rounded-lg fadeIn animation-delay-800">Your vault may contain potentially sensitive information. Please re-enter your password.</p>
 
       <div className="grid md:grid-cols-2 gap-10">
