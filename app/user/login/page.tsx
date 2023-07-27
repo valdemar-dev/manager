@@ -1,5 +1,6 @@
 "use client";
 
+import Card from "@/components/CardComponent";
 import Divider from "@/components/Divider";
 import hashText from "@/utils/hashText";
 import { detect } from "detect-browser";
@@ -86,21 +87,24 @@ export default function Login() {
 
 
       <div className="grid md:grid-cols-2 gap-10">
-        <section className="bg-primary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200 h-min">
-          <h3 className="text-xl font-semibold mb-2">Login</h3>
-          <form onSubmit={async (event) => {await handleLogin(event)}}>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="username" placeholder="username"/>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="email"/>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
+        <Card
+          title="Login"
+          animationDelay="animation-delay-1000"
+          type="secondary"
+        >
+          <form className="mt-2" onSubmit={async (event) => {await handleLogin(event)}}>
+            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="username" placeholder="username"/>
+            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="email"/>
+            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
 
             <p className="mt-2 unobsuctive">
               Don't have an account? <br/>
               <Link href="/user/register" className="text-accent font-semibold">Register</Link>
             </p>
 
-            <button className="bg-primary-darker active:bg-secondary-darker sm:hover:bg-secondary transition-all duration-200 text-text text-lg px-3 py-1 rounded-md mt-3" type="submit">Login</button>
+            <button className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md fadeIn animation-delay-800 mt-2 font-semibold" type="submit">Login</button>
           </form>
-        </section>
+        </Card>
       </div>
 
       <dialog ref={infoModal} className="rounded-xl w-96 fadeIn delay-0">
