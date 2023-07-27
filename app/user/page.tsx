@@ -133,7 +133,7 @@ export default function Account() {
             <h3 className="text-xl font-semibold">{username}</h3>
             <p className="unobstructive text-secondary mb-2">{user?.role}</p>
             <p className="text-lg text-secondary">Plan: {user?.plan}</p>
-            <p className="text-lg text-secondary">Member since: {new Date(user!.createdAt).toLocaleDateString()}</p>
+            <p className="text-lg text-secondary">Member since: {new Date(user?.createdAt || 0).toLocaleDateString()}</p>
           </div>
         </section>
 
