@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import copy from "copy-to-clipboard";
 import Link from "next/link";
+import Divider from "@/components/Divider";
+import Card from "@/components/CardComponent";
 
 export default function Accounts() {
   const router = useRouter();
@@ -17,7 +19,7 @@ export default function Accounts() {
 
   const [accounts, setAccounts] = useState<any[]>([]);
   const [accountsPageNumber, setAccountsPageNumber] = useState<number>(1);
-  const [accountsPageMaxIndex, setAccountsPageMaxIndex] = useState<number>();
+  const [accountsPageMaxIndex, setAccountsPageMaxIndex] = useState<number>(1);
 
   const passwordField = useRef<HTMLInputElement>(null);
   const usernameField = useRef<HTMLInputElement>(null);
@@ -73,7 +75,9 @@ export default function Accounts() {
       setAccounts(res.accounts);
 
       const accountsPerPage: number = 5;
-      setAccountsPageMaxIndex(Math.ceil(res.accounts.length / accountsPerPage));
+      if (res.accounts.length > 0) {
+        setAccountsPageMaxIndex(Math.ceil(res.accounts.length / accountsPerPage));
+      }
       
     })
   }, []);
@@ -152,18 +156,18 @@ export default function Accounts() {
 
     return filteredAccounts.map((account, index) => {
       return (
-        <div className="flex-grow flex items-center gap-2 bg-secondary-darker px-3 py-2 rounded-lg" key={account.id}>
+        <div className="flex-grow flex items-center gap-2 bg-gray-200 px-3 py-2 rounded-lg" key={account.id}>
           <span className="mr-auto text-lg">{account.accountService}</span> 
-          <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-2" onClick={() => {copy(account.accountPassword)}}>
+          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {copy(account.accountPassword)}}>
             <Image src={"/password.svg"} height={"18"} width={"18"} alt={"password icon"}/>
           </button>
-          <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-2" onClick={() => {copy(account.accountUsername)}}>
+          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {copy(account.accountUsername)}}>
             <Image src={"/username.svg"} height={"18"} width={"18"} alt={"username icon"}/>
           </button>
-          <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-2" onClick={() => {copy(account.accountEmail)}}>
+          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {copy(account.accountEmail)}}>
             <Image src={"/email.svg"} height={"18"} width={"18"} alt={"email icon"}/>
           </button>
-          <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-2" onClick={() => {handleShowModal(account)}}>
+          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {handleShowModal(account)}}>
             <Image src={"/edit.svg"} height={"18"} width={"18"} alt={"edit icon"}/>
           </button>
         </div>
@@ -225,59 +229,63 @@ export default function Accounts() {
   return (
     <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 box-border">
       { /* navigation menu */}
+      { /* navigation menu */}
       <div className="items-center flex gap-2">
-        <Link href="/vault" className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2 fadeIn animation-delay-400">
+        <Link href="/vault" className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 fadeIn animation-delay-400">
           <Image src={"/back.svg"} height={"22"} width={"22"} alt={"back button"}/>
         </Link>
 
-        <Link href="/dashboard" className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2 fadeIn animation-delay-400">
+        <Link href="/dashboard" className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 fadeIn animation-delay-400">
           <Image src={"/home.svg"} height={"22"} width={"22"} alt={"home button"}/>
         </Link>
         <span className="font-semibold ml-auto text-lg fadeIn">ManagerX</span>
       </div>
 
-      {/* divider */}
-      <div className="h-10"></div>
+      <Divider height="h-10"/>
 
       <div>
         <h1 className="text-4xl font-semibold fadeIn animation-delay-400">Accounts</h1>
         <p className="fadeIn animation-delay-800">Google, Spotify, Twitter etc.</p>
       </div>
 
-      <div className="h-10"></div>
+      <Divider height="h-10"/>
 
       <div className="grid md:grid-cols-2 gap-10">
-        <section className="bg-primary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200 h-min">
-          <h3 className="text-xl font-semibold mb-2">Create</h3>
-          <form onSubmit={async (event) => {addAccount(event)}}>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" type="text" name="username" placeholder="username"/>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" type="email" name="email" placeholder="email"/>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="service" placeholder="service"/>
+        <Card
+          title="Create"
+          type="primary"
+          animationDelay="animation-delay-1000"
+        >
+          <form className="mt-2" onSubmit={async (event) => {addAccount(event)}}>
+            <input className="bg-sky-200 focus:bg-sky-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" type="text" name="username" placeholder="username"/>
+            <input className="bg-sky-200 focus:bg-sky-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" type="email" name="email" placeholder="email"/>
+            <input className="bg-sky-200 focus:bg-sky-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
+            <input className="bg-sky-200 focus:bg-sky-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="service" placeholder="service"/>
 
             <p className="mt-2">You might need to refresh your page to see changes take affect.</p>
 
-            <button className="bg-primary-darker active:bg-secondary-darker sm:hover:bg-secondary transition-all duration-200 text-text text-lg px-3 py-1 rounded-md w-full mt-3" type="submit">Add Account</button>
+            <button className="bg-sky-200 active:bg-secondary-darker sm:hover:bg-secondary transition-all duration-200 text-text text-lg px-3 py-1 rounded-md w-full mt-3" type="submit">Add Account</button>
           </form>
-        </section>
+        </Card>
 
         {/* accounts list */}
-        <section className="bg-secondary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400 h-min">
-          <div>
-            <h3 className="text-xl font-semibold">Accounts</h3>
-            <p className="mb-2">{accounts.length} account(s) found.</p>
-          </div>
+        <Card
+          title="Accounts"
+          type="secondary"
+          animationDelay="animation-delay-1200"
+        >          
+          <p className="mb-2">{accounts.length} account(s) found.</p>
           {mapAccounts()}
           <div className="flex gap-2 flex-row mt-2">
-            <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-2" onClick={() => {accountsPageNumber === 1 ? null : setAccountsPageNumber(accountsPageNumber-1)}}>
+            <button className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2" onClick={() => {accountsPageNumber === 1 ? null : setAccountsPageNumber(accountsPageNumber-1)}}>
               <Image src={"/arrow-backward.svg"} height={"18"} width={"18"} alt={"back page button"}/>
             </button>
-            <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-2" onClick={() => {accountsPageNumber === accountsPageMaxIndex ? null : setAccountsPageNumber(accountsPageNumber+1)}}>
+            <button className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2" onClick={() => {accountsPageNumber === accountsPageMaxIndex ? null : setAccountsPageNumber(accountsPageNumber+1)}}>
               <Image src={"/arrow-forward.svg"} height={"18"} width={"18"} alt={"next page button"}/>
             </button> 
           </div>
           <p className="text-sm">Showing page {accountsPageNumber} of {accountsPageMaxIndex}</p>
-        </section>
+        </Card>
       </div>
 
       <dialog ref={accountModal} className="rounded-xl">
@@ -305,11 +313,11 @@ export default function Accounts() {
       </dialog>
 
       <dialog ref={infoModal} className="rounded-xl w-96 fadeIn delay-0">
-        <div className="bg-accent drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400">
+        <div className="bg-gray-100 drop-shadow-xl p-4 rounded-xl flex flex-col gap-2">
           <div className="flex items-start flex-row gap-1">
-            <h3 className="text-secondary text-2xl font-semibold">Info</h3>
+            <h3 className="text-2xl font-semibold">Info</h3>
             <form method="dialog" className="flex ml-auto">
-              <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-1">
+              <button className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-1">
                 <Image src={"/close.svg"} height={"20"} width={"20"} alt={"close icon"} className="fill-secondary"/>
               </button>              
             </form>

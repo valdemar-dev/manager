@@ -8,6 +8,7 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip } from "chart.js";
 import copy from "copy-to-clipboard";
 import crypto from "crypto";
+import Card from "@/components/CardComponent";
 
 declare const window: any;
 
@@ -119,7 +120,7 @@ export default function Vault() {
     <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 box-border">
       { /* navigation menu */}
       <div className="items-center flex gap-2">
-        <Link href="/dashboard" className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2 fadeIn animation-delay-400">
+        <Link href="/dashboard" className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 fadeIn animation-delay-400">
           <Image src={"/home.svg"} height={"22"} width={"22"} alt={"home button"}/>
         </Link>
         <span className="font-semibold ml-auto text-lg fadeIn">ManagerX</span>
@@ -135,8 +136,11 @@ export default function Vault() {
       <div className="h-10"></div>
 
       <div className="grid md:grid-cols-2 gap-10">
-        <section className="bg-primary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200 h-min">
-          <h3 className="text-xl font-semibold">Usage</h3>
+        <Card
+          title="Usage"
+          animationDelay="animation-delay-1000"
+          type="primary"
+        >
           <div className="relative flex flex-row">
             <div className="w-1/2 flex flex-col mr-4">
               <p className="unobstructive">Accounts and contacts are worth 1 entry each.</p>
@@ -147,14 +151,17 @@ export default function Vault() {
               <Doughnut className="" data={doughnutData} options={doughnutOptions}/>
             </div>
           </div>
-        </section>
+        </Card>
 
         {/* accounts list */}
-        <section className="bg-secondary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400 h-min">
-          <h3 className="text-xl font-semibold mb-2">Accounts</h3>
+        <Card
+          title="Accounts"
+          animationDelay="animation-delay-1200"
+          type="secondary"
+        >
           {mapAccounts()}
           <Link href="/vault/accounts" className="mt-2 text-accent font-semibold">Go to Accounts</Link>
-        </section>
+        </Card>
       </div>
     </main>
   )

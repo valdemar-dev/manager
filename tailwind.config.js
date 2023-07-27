@@ -18,17 +18,6 @@ module.exports = {
         2000: "2000ms",
       }
     },
-    colors: {
-      'text': '#050505',
-      'background': '#fafafa',
-      'background-darker': '#cacaca',
-      'primary': '#d2ccc4',
-      'primary-darker': '#c2bcb4',
-      'secondary': '#E3E5E8',
-      'secondary-darker': '#D3D5D8',
-      'accent': '#151821',
-      'accent-lighter': "#252831",
-    }
   },
   plugins: [
     require("tailwindcss-animation-delay"),

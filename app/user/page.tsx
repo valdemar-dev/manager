@@ -1,5 +1,7 @@
 "use client";
 
+import Card from "@/components/CardComponent";
+import Divider from "@/components/Divider";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,6 +15,8 @@ export default function Account() {
 
   const [sessions, setSessions] = useState<any[]>([]);
   const [username, setUsername] = useState("");
+
+  const [loading, setLoading] = useState(true);
 
   interface User {
     createdAt: Date,
@@ -49,6 +53,8 @@ export default function Account() {
       const res = await response.json();
       setUser(res);
     })
+
+    setLoading(false);
   }, []);
 
   const logout = () => {
@@ -108,86 +114,106 @@ export default function Account() {
     });
   };
 
+  if (loading) {
+    return (
+      <></>
+    )
+  }
+
   return (
     <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 box-border">
       { /* navigation menu */}
       <div className="items-center flex gap-2">
-        <Link href="/dashboard" className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2 fadeIn animation-delay-400">
+        <Link href="/dashboard" className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 fadeIn animation-delay-400">
           <Image src={"/home.svg"} height={"22"} width={"22"} alt={"home button"}/>
         </Link>
         <span className="font-semibold ml-auto text-lg fadeIn">ManagerX</span>
       </div>
 
-      <div className="h-10"></div>
+      <Divider height="h-10"/>
 
       <div>
         <h1 className="text-4xl font-semibold fadeIn animation-delay-400">Profile</h1>
         <p className="fadeIn animation-delay-800">Manage sessions, view notifications, change settings, etc.</p>
       </div>
 
-      <div className="h-10"></div>
+      <Divider height="h-10"/>
 
       <div className="grid md:grid-cols-2 gap-10">
-        <section className="bg-accent text-secondary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1000 h-min">
-          <div>
-            <h3 className="text-xl font-semibold">{username}</h3>
-            <p className="unobstructive text-secondary mb-2">{user?.role}</p>
-            <p className="text-lg text-secondary">Plan: {user?.plan}</p>
-            <p className="text-lg text-secondary">Member since: {new Date(user?.createdAt || 0).toLocaleDateString()}</p>
-          </div>
-        </section>
+        <Card
+          title={username || ""}
+          type="primary"
+          animationDelay="animation-delay-1000"
+        >
+          <p className="unobstructive text-secondary mb-2">{user?.role}</p>
 
-        <section className="bg-primary max-w-full shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200 h-min">
-          <h3 className="text-xl font-semibold mb-2">Sessions</h3>
-          {sessions.map((session) => {
-            return (
-              <div className="relative bg-primary-darker px-3 py-2 rounded-lg" key={session.lastActive.toString("hex")}>
-                <div className="flex flex-row items-start">
-                  <h3 className="text-lg font-semibold">{session.os}</h3>
-                  <button className="ml-auto rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2" onClick={() => {deleteSession([session.createdAt])}}>
-                    <Image src={"/delete.svg"} height={"22"} width={"22"} alt={"deletion icon"}/>
-                  </button>
+          <p className="text-lg text-secondary">Plan: <span className="font-bold">{user?.plan}</span></p>
+          <p className="text-lg text-secondary">Joined: <span className="font-bold">{new Date(user?.createdAt || "0").toLocaleDateString()}</span></p>
+        </Card>
+
+        <Card
+          title="Sessions"
+          type="secondary"
+          animationDelay="animation-delay-1200"
+        >
+          <div className="mt-2">
+            {sessions.map((session) => {
+              return (
+                <div className="relative bg-gray-200 px-3 py-2 rounded-lg" key={session.lastActive.toString("hex")}>
+                  <div className="flex flex-row items-start">
+                    <h3 className="text-lg font-semibold">{session.os}</h3>
+                    <button className="ml-auto rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {deleteSession([session.createdAt])}}>
+                      <Image src={"/delete.svg"} height={"22"} width={"22"} alt={"deletion icon"}/>
+                    </button>
+                  </div>
+                  <p className="mt-2">Last active: {new Date(session.lastActive || "1000").toLocaleString()}</p>
+                  
+                  <div className="break-words overflow-hidden">
+                    <details className="break-words overflow-hidden">
+                      <summary>Click to show IP</summary>
+                      <span className="break-all">{session.userIp}</span>
+                    </details>
+                  </div>
                 </div>
-                Last active: {new Date(session.lastActive).toLocaleString()}
-                
-                <div className="break-words overflow-hidden">
-                  <details className="break-words overflow-hidden">
-                    <summary>Click to show IP</summary>
-                    <span className="break-all">{session.userIp}</span>
-                  </details>
-                </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
 
           <div className="flex gap-2 flex-row mt-2">
-            <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2" onClick={() => {sessionsPageNumber === 1 ? null : setSessionsPageNumber(sessionsPageNumber-1)}}>
+            <button className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2" onClick={() => {sessionsPageNumber === 1 ? null : setSessionsPageNumber(sessionsPageNumber-1)}}>
               <Image src={"/arrow-backward.svg"} height={"18"} width={"18"} alt={"back page button"}/>
             </button>
-            <button className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2" onClick={() => {sessionsPageNumber === sessionsPageMaxIndex ? null : setSessionsPageNumber(sessionsPageNumber+1)}}>
+            <button className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2" onClick={() => {sessionsPageNumber === sessionsPageMaxIndex ? null : setSessionsPageNumber(sessionsPageNumber+1)}}>
               <Image src={"/arrow-forward.svg"} height={"18"} width={"18"} alt={"next page button"}/>
             </button> 
           </div>
           <p className="text-sm">Showing page {sessionsPageNumber} of {sessionsPageMaxIndex}</p>
-        </section>
+        </Card>
 
-        <section className="bg-primary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400 h-min">
-          <h3 className="text-xl font-semibold">Theme</h3>
+
+        <Card
+          title="Theme"
+          type="secondary"
+          animationDelay="animation-delay-1400"
+        >
           <p className="px-2 py-1 bg-primary-darker text-lg rounded-lg">Releases in 1.0</p>
-        </section>
+        </Card>
 
-        <section className="bg-secondary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1600 h-min">
-          <h3 className="text-xl font-semibold">Account actions</h3>
-          <div className="flex flex-row flex-wrap gap-2">
-            <button className="w-fit flex flex-row gap-2 items-center rounded-md bg-secondary-darker duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2" onClick={() => {logout()}}>
+        <Card
+          title="Account actions"
+          type="secondary"
+          animationDelay="animation-delay-1600"
+        >
+          <div className="mt-2 flex flex-row flex-wrap gap-2">
+            <button className="w-fit flex flex-row gap-2 font-semibold text-red-500 items-center rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2" onClick={() => {logout()}}>
               <Image src={"/logout.svg"} height={"22"} width={"22"} alt={"deletion icon"}/> Log out
             </button>
 
-            <button className="w-fit flex flex-row gap-2 items-center rounded-md bg-secondary-darker duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2" onClick={() => {deleteSession("all")}}>
+            <button className="w-fit flex flex-row gap-2 font-semibold text-red-500 items-center rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2" onClick={() => {deleteSession("all")}}>
               <Image src={"/logout.svg"} height={"22"} width={"22"} alt={"deletion icon"}/> Kick all sessions
             </button>
           </div>
-        </section>
+        </Card>
       </div>
 
       <dialog ref={infoModal} className="rounded-xl w-96 fadeIn delay-0">

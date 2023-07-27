@@ -6,6 +6,8 @@ import crypto from "crypto";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Card from "@/components/CardComponent";
+import Divider from "@/components/Divider";
 
 export default function VaultAuth() {
   const router = useRouter();
@@ -55,33 +57,37 @@ export default function VaultAuth() {
     <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 box-border">
       { /* navigation menu */}
       <div className="items-center flex gap-2">
-        <Link href="/dashboard" className="rounded-md bg-secondary duration-200 active:bg-secondary-darker sm:hover:bg-secondary-darker p-2 fadeIn animation-delay-400">
+        <Link href="/dashboard" className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 fadeIn animation-delay-400">
           <Image src={"/home.svg"} height={"22"} width={"22"} alt={"home button"}/>
         </Link>
         <span className="font-semibold ml-auto text-lg fadeIn">ManagerX</span>
       </div>
 
-      <div className="h-10"></div>
+      <Divider height="h-10"/>
 
       <h1 className="text-2xl font-semibold fadeIn animation-delay-400">Hold on!</h1>
-      <p className="flex items-center gap-2 text-lg mb-6 rounded-lg fadeIn animation-delay-800">Your vault may contain potentially sensitive information. Please re-enter your password.</p>
+      <p className="flex items-center gap-2 text-lg mb-6 rounded-lg fadeIn animation-delay-800">Your vault may contain potentially sensitive information.</p>
 
       <div className="grid md:grid-cols-2 gap-10">
-        <section className="bg-primary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200">
-          <span className="unobstructive text-sm">You won't be prompted again for the remainder of this session.</span>
+        <Card
+          title="Please enter your password."
+          type="secondary"
+          animationDelay="animation-delay-1000"
+        >
           <form onSubmit={(event) => {handleAuth(event)}}>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" type="password" required name="password" placeholder="password"/>
-            <button className="bg-secondary active:bg-secondary-darker text-text text-lg px-3 py-1 rounded-md w-full" type="submit">Authenticate</button>
+            <span className="unobstructive text-sm">You won't be prompted again for the remainder of this session.</span>
+            <input className="bg-gray-200 focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2 mt-2" type="password" required name="password" placeholder="password"/>
+            <button className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md fadeIn animation-delay-800 mt-2 font-semibold" type="submit">Authenticate</button>
           </form>
-        </section>
+        </Card>
       </div>
 
       <dialog ref={infoModal} className="rounded-xl w-96 fadeIn delay-0">
-        <div className="bg-accent drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400">
+        <div className="bg-gray-100 drop-shadow-xl p-4 rounded-xl flex flex-col gap-2">
           <div className="flex items-start flex-row gap-1">
-            <h3 className="text-secondary text-2xl font-semibold">Info</h3>
+            <h3 className="text-2xl font-semibold">Info</h3>
             <form method="dialog" className="flex ml-auto">
-              <button className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-1">
+              <button className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-1">
                 <Image src={"/close.svg"} height={"20"} width={"20"} alt={"close icon"} className="fill-secondary"/>
               </button>              
             </form>

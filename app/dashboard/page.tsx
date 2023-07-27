@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Divider from "@/components/Divider";
+import Card from "@/components/CardComponent";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -35,30 +37,39 @@ export default function Dashboard() {
   return (
     <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 pt-12 box-border">
       <h1 className="text-4xl font-semibold fadeIn">Welcome back, {username}</h1>
-      <p className="fadeIn animation-delay-600">It's currently <span className="fadeIn animation-delay-1200">{time}</span></p>
+      <div className="flex flex-row gap-1">
+      <p className="fadeIn animation-delay-600 items-start">The time is</p> 
+      <p className="fadeIn animation-delay-1200 font-semibold text-green-500">{time}</p>
+      </div>
 
-      {/* divider */}
-      <div className="h-10"></div>
+      <Divider height="h-10"/>
 
       <div className="grid md:grid-cols-2 gap-10">
-        <section className="bg-accent text-secondary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200 h-min">
-          <h3 className="text-xl font-semibold">The Vault</h3>
+        <Card
+          title="The Vault"
+          type="primary"
+          animationDelay="animation-delay-1000"
+        >
           <p>Your most valuable data kept encrypted in one place. Access from anywhere in the world.</p>
-          <Link href="/vault/" className="mt-2 text-secondary-darker font-semibold">Enter your Vault</Link>
-        </section>
+          <Link href="/vault/" className="mt-2 font-semibold">Enter your Vault</Link>
+        </Card>
 
-        <section className="bg-primary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400 h-min">
-          <h3 className="text-xl font-semibold"> Profile</h3>
+        <Card
+          title="Profile"
+          type="secondary"
+          animationDelay="animation-delay-1200"
+        >
           <p>Manage sessions, view notifications, change settings, etc.</p>
-          <Link href="/user/" className="mt-2 text-accent font-semibold">View your Profile</Link>
-        </section>
+          <Link href="/user/" className=" mt-auto font-semibold">View your Profile</Link>
+        </Card>
 
-        <section className="bg-primary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1600">
-          <h3 className="text-xl font-semibold mb-2">Projects</h3>
-          <div className="flex items-center gap-2 bg-primary-darker px-3 py-2 rounded-lg">
-            <p className="text-lg">Releases in 1.0</p>
-          </div>
-        </section>
+        <Card
+          title="Projects"
+          type="secondary"
+          animationDelay="animation-delay-1400"
+        >
+          <p className="text-lg">Releases in 1.0</p>
+        </Card>
       </div>
     </main>
   )

@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react';
+import Card from '@/components/CardComponent';
+import Divider from '@/components/Divider';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -18,45 +20,55 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 pt-12 box-border">
-      <h1 className="text-4xl font-semibold fadeIn mb-2">Welcome to ManagerX</h1>
+    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl p-4 pt-12 box-border">
+      <h1 className="text-4xl font-semibold fadeIn mb-2">
+        Welcome to <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">ManagerX</span>
+        </h1>
       <p className="fadeIn animation-delay-600">The All-Purpose Manager for Enhanced Productivity and Clarity.</p>
 
-      {/* divider */}
-      <div className="h-10"></div>
+      <Divider height="h-10"/>
 
       <div className="flex flex-row gap-2">
-        <a className="bg-accent text-primary sm:hover:shadow-2xl transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-800" href="/user/register">Register</a>
-        <a className="bg-secondary active:bg-secondary-darker sm:hover:bg-secondary transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-900" href="/user/login">Login</a>
+        <a className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-800" href="/user/register">Register</a>
+        <a className="bg-neutral-200 transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-900" href="/user/login">Login</a>
       </div>
 
-      {/* divider */}
-      <div className="h-10"></div>
+      <Divider height="h-10"/>
 
       <div className="grid md:grid-cols-2 gap-10">
-        <section className="bg-primary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1000 h-min">
-          <h3 className="text-xl font-semibold">Account management</h3>
-          <p>Remove the hassle of remembering account details. Encrypted and safe, forever.</p>
-        </section>
 
-        <section className="bg-secondary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200 h-min">
-          <h3 className="text-xl font-semibold">Contacts</h3>
-          <p>Create contact information for people you know. Names, phone numbers, social medias, etc.</p>
-        </section>
+        <Card 
+          title="Account management" 
+          animationDelay={"animation-delay-1000"}
+          type={"secondary"}
+        >
+          <p className="marker:text-green-400 list-item text-lg ml-5">Remove the hassle of remembering account details. Encrypted and safe, forever.</p>
+        </Card>
 
-        <section className="bg-secondary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1600">
-          <h3 className="text-xl font-semibold mb-2">Tasks</h3>
-          <div className="flex items-center gap-2 bg-secondary-darker px-3 py-2 rounded-lg">
-            <p className="text-lg">Releases in 1.0</p>
-          </div>
-        </section>
 
-        <section className="bg-primary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400">
-          <h3 className="text-xl font-semibold mb-2">Notes</h3>
-          <div className="flex items-center gap-2 bg-primary-darker px-3 py-2 rounded-lg">
-            <p className="text-lg">Planned for 1.1</p>
-          </div>
-        </section>
+        <Card 
+          title="Contacts" 
+          animationDelay={"animation-delay-1200"}
+          type={"secondary"}
+        >
+          <p className="marker:text-green-400 list-item text-lg ml-5">Create contacts for people you know. Names, phone numbers, social medias, etc.</p>
+        </Card>
+
+        <Card 
+          title="Notes" 
+          animationDelay={"animation-delay-1400"}
+          type={"secondary"}
+        >
+          <p className="marker:text-green-400 list-item text-lg ml-5">Planned for 1.1</p>
+        </Card>
+
+        <Card 
+          title="Tasks" 
+          animationDelay={"animation-delay-1600"}
+          type={"secondary"}
+        >
+          <p className="marker:text-green-400 list-item text-lg ml-5">Releases in 1.0</p>
+        </Card>
       </div>
     </main>
   )

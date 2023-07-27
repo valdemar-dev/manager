@@ -31,5 +31,20 @@ export async function GET(request: NextRequest) {
     },
   });
 
+  const userInDb = await prisma.user.findUnique({
+    where: {
+      id: session.userId,
+    },
+  }) || null;
+
+  if (
+    userInDb.role === "Beta" ||
+    userInDb.role === "Admin" 
+  ) {
+    sessions.forEach((session: any) => {
+      session.userIp = "Withheld for privacy";
+    });
+  }
+
   return new Response(JSON.stringify(sessions));
 } 
