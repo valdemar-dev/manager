@@ -4,6 +4,7 @@ import prisma from "@/utils/prismaClient";
 
 export async function GET(request: NextRequest) {
   const sessionId = request.cookies.get("sessionId")?.value;
+
   const session = await getSession(sessionId || null);
 
   if (!session) {
@@ -11,14 +12,16 @@ export async function GET(request: NextRequest) {
       status: 401,
     });
   }
-  
+
   const userInDb = await prisma.user.findUnique({
     where: {
       id: session.userId,
     },
     select: {
-      vaultEntryTotal: true,
       password: false,
+      createdAt: true,
+      role: true,
+      plan: true,
     },
   }) || null;
 
@@ -28,5 +31,5 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  return new Response(JSON.stringify(userInDb.vaultEntryTotal));
+  return new Response(JSON.stringify(userInDb));
 }

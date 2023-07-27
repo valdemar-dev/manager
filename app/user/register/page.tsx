@@ -107,7 +107,7 @@ export default function Register() {
         </section>
       </div>
 
-      <dialog ref={infoModal} className="rounded-xl fadeIn delay-0 sm:max-w-xl">
+      <dialog ref={infoModal} className="rounded-xl w-96 fadeIn delay-0">
         <div className="bg-accent drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400">
           <div className="flex items-start flex-row gap-1">
             <h3 className="text-secondary text-2xl font-semibold">Info</h3>
@@ -118,7 +118,7 @@ export default function Register() {
             </form>
           </div>
 
-          <p className="text-secondary text-lg mt-1 px-2 py-1 bg-accent-lighter rounded-lg">{infoText}</p>
+          <p className="text-secondary text-lg rounded-lg">{infoText}</p>
         </div>
       </dialog>
     </main>

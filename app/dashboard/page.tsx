@@ -42,15 +42,15 @@ export default function Dashboard() {
 
       <div className="grid md:grid-cols-2 gap-10">
         <section className="bg-accent text-secondary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1200 h-min">
-          <h3 className="text-xl font-semibold">Profile</h3>
-          <p>Manage sessions, view notifications, change settings, etc.</p>
-          <Link href="/user/" className="mt-2 text-primary-darker font-semibold">View your Profile</Link>
+          <h3 className="text-xl font-semibold">The Vault</h3>
+          <p>Your most valuable data kept encrypted in one place. Access from anywhere in the world.</p>
+          <Link href="/vault/" className="mt-2 text-secondary-darker font-semibold">Enter your Vault</Link>
         </section>
 
         <section className="bg-primary shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400 h-min">
-          <h3 className="text-xl font-semibold">The Vault</h3>
-          <p>Your most valuable data kept encrypted in one place. Access from anywhere in the world.</p>
-          <Link href="/vault/" className="mt-2 text-accent font-semibold">Enter your Vault</Link>
+          <h3 className="text-xl font-semibold"> Profile</h3>
+          <p>Manage sessions, view notifications, change settings, etc.</p>
+          <Link href="/user/" className="mt-2 text-accent font-semibold">View your Profile</Link>
         </section>
 
         <section className="bg-primary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1600">

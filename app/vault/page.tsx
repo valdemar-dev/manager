@@ -153,7 +153,7 @@ export default function Vault() {
         <section className="bg-secondary drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400 h-min">
           <h3 className="text-xl font-semibold mb-2">Accounts</h3>
           {mapAccounts()}
-          <Link href="/vault/accounts" className="mt-2 text-accent font-semibold">View All</Link>
+          <Link href="/vault/accounts" className="mt-2 text-accent font-semibold">Go to Accounts</Link>
         </section>
       </div>
     </main>
