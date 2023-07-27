@@ -156,7 +156,7 @@ export default function Accounts() {
 
     return filteredAccounts.map((account, index) => {
       return (
-        <div className="flex-grow flex items-center gap-2 bg-gray-200 px-3 py-2 rounded-lg mb-2" key={account.id}>
+        <div className="flex-grow flex items-center gap-2 bg-gray-200 px-3 py-2 rounded-lg" key={account.id}>
           <span className="mr-auto text-lg">{account.accountService}</span> 
           <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {copy(account.accountPassword)}}>
             <Image src={"/password.svg"} height={"18"} width={"18"} alt={"password icon"}/>

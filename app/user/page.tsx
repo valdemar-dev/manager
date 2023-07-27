@@ -159,7 +159,7 @@ export default function Account() {
           <div className="mt-2">
             {sessions.map((session) => {
               return (
-                <div className="relative bg-gray-200 px-3 py-2 rounded-lg" key={session.lastActive.toString("hex")}>
+                <div className="relative bg-gray-200 px-3 py-2 rounded-lg mb-2" key={session.lastActive.toString("hex")}>
                   <div className="flex flex-row items-start">
                     <h3 className="text-lg font-semibold">{session.os}</h3>
                     <button className="ml-auto rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {deleteSession([session.createdAt])}}>
