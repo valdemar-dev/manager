@@ -274,24 +274,28 @@ export default function Accounts() {
       </div>
 
       <dialog ref={accountModal} className="rounded-xl">
-        <div className="bg-accent drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400">
+        <div className="bg-gray-100 drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400">
           <h3 className="text-xl font-semibold mb-2 text-secondary">Edit account</h3>
           <form method="dialog" onSubmit={(event) => {handleAccountEdit(event)}}>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="username" type="username" defaultValue={accountToEdit?.accountUsername} ref={usernameField} placeholder="username"/>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="email" type="email" defaultValue={accountToEdit?.accountEmail} ref={emailField} placeholder="email"/>
+            <span className="text-sm">Username</span>
+            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="username" type="username" defaultValue={accountToEdit?.accountUsername} ref={usernameField} placeholder="username"/>
+            <span className="text-sm">Email address</span>
+            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="email" type="email" defaultValue={accountToEdit?.accountEmail} ref={emailField} placeholder="email"/>
+            <span className="text-sm">Password</span>
             <div className="flex gap-2">
-              <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="password" required type="password" defaultValue={accountToEdit?.accountPassword} ref={passwordField} placeholder="password"/>
-              <a className="rounded-md bg-primary duration-200 active:bg-primary-darker sm:hover:bg-primary-darker p-2 mb-2 flex justify-center items-center" onClick={() => {togglePasswordVisibility()}}>
+              <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="password" required type="password" defaultValue={accountToEdit?.accountPassword} ref={passwordField} placeholder="password"/>
+              <a className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 mb-2 flex justify-center items-center" onClick={() => {togglePasswordVisibility()}}>
                 <Image src={"/eye-open.svg"} height={"22"} width={"22"} alt={"eye open icon"}/>
               </a>
             </div>
-            <input className="bg-secondary focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="service" required type="service" defaultValue={accountToEdit?.accountService} ref={serviceField} placeholder="service"/>
+            <span className="text-sm">Service</span>
+            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="service" required type="service" defaultValue={accountToEdit?.accountService} ref={serviceField} placeholder="service"/>
 
             <p className="mt-2 text-secondary">You might need to refresh your page to see changes take affect.</p>
 
             <div className="flex gap-2">
-              <button className="bg-primary-darker active:bg-primary text-text text-lg px-3 py-1 rounded-md w-full mt-3" type="submit">Save</button>
-              <button className="bg-secondary-darker active:bg-secondary-darker text-text text-lg px-3 py-1 rounded-md w-full mt-3" type="reset">Revert</button>
+              <button className="bg-blue-300 active:bg-blue-500 sm:hover:bg-blue-400 duration-200 text-lg px-3 py-1 rounded-md w-full mt-3" type="submit">Save</button>
+              <button className="bg-gray-200 active:bg-gray-400 sm:hover:bg-gray-300 duration-200 text-lg px-3 py-1 rounded-md w-full mt-3" type="reset">Revert</button>
             </div>
           </form>
         </div>

@@ -81,7 +81,7 @@ export default function Register() {
             animationDelay="animation-delay-1000"
             type="secondary"
         >
-          <form className="mt-2" onSubmit={async (event) => {await handleRegister(event)}}>
+          <form onSubmit={async (event) => {await handleRegister(event)}}>
             <span className="text-sm">3-20 characters. No spaces allowed.</span>
             <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="username" placeholder="username"/>
             <span className="text-sm">You will need to confirm this.</span>

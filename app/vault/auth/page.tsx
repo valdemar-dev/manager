@@ -60,14 +60,14 @@ export default function VaultAuth() {
 
       <div className="grid md:grid-cols-2 gap-10">
         <Card
-          title="Please enter your password."
+          title="Please enter your password"
           type="secondary"
           animationDelay="animation-delay-1000"
         >
           <form onSubmit={(event) => {handleAuth(event)}}>
             <span className="unobstructive text-sm">You won't be prompted again for the remainder of this session.</span>
             <input className="bg-gray-200 focus:bg-secondary-darker duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2 mt-2" type="password" required name="password" placeholder="password"/>
-            <button className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md fadeIn animation-delay-800 mt-2 font-semibold" type="submit">Authenticate</button>
+            <button className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md mt-2 font-semibold" type="submit">Authenticate</button>
           </form>
         </Card>
       </div>
