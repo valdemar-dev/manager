@@ -100,15 +100,15 @@ export default function Vault() {
 
     return accounts.map((account) => {
       return (
-        <div className="flex-grow flex items-center gap-2 bg-gray-200 px-3 py-2 rounded-lg" key={account.id}>
+        <div className="flex-grow flex items-center gap-2 bg-secondary-200 px-3 py-2 rounded-lg" key={account.id}>
           <span className="mr-auto text-lg">{account.accountService}</span> 
-          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {copy(account.accountPassword)}}>
+          <button className="rounded-md bg-secondary-300 duration-200 active:bg-secondary-500 sm:hover:bg-secondary-400 p-2" onClick={() => {copy(account.accountPassword)}}>
             <Image src={"/password.svg"} height={"18"} width={"18"} alt={"password icon"}/>
           </button>
-          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {copy(account.accountUsername)}}>
+          <button className="rounded-md bg-secondary-300 duration-200 active:bg-secondary-500 sm:hover:bg-secondary-400 p-2" onClick={() => {copy(account.accountUsername)}}>
             <Image src={"/username.svg"} height={"18"} width={"18"} alt={"username icon"}/>
           </button>
-          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {copy(account.accountEmail)}}>
+          <button className="rounded-md bg-secondary-300 duration-200 active:bg-secondary-500 sm:hover:bg-secondary-400 p-2" onClick={() => {copy(account.accountEmail)}}>
             <Image src={"/email.svg"} height={"18"} width={"18"} alt={"email icon"}/>
           </button>
         </div>

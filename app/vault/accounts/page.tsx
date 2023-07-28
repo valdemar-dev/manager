@@ -156,18 +156,18 @@ export default function Accounts() {
 
     return filteredAccounts.map((account, index) => {
       return (
-        <div className="flex-grow flex items-center gap-2 bg-gray-200 px-3 py-2 rounded-lg" key={account.id}>
+        <div className="flex-grow flex items-center gap-2 bg-secondary-200 px-3 py-2 rounded-lg" key={account.id}>
           <span className="mr-auto text-lg">{account.accountService}</span> 
-          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {copy(account.accountPassword)}}>
+          <button className="rounded-md bg-secondary-300 duration-200 active:bg-secondary-500 sm:hover:bg-secondary-400 p-2" onClick={() => {copy(account.accountPassword)}}>
             <Image src={"/password.svg"} height={"18"} width={"18"} alt={"password icon"}/>
           </button>
-          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {copy(account.accountUsername)}}>
+          <button className="rounded-md bg-secondary-300 duration-200 active:bg-secondary-500 sm:hover:bg-secondary-400 p-2" onClick={() => {copy(account.accountUsername)}}>
             <Image src={"/username.svg"} height={"18"} width={"18"} alt={"username icon"}/>
           </button>
-          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {copy(account.accountEmail)}}>
+          <button className="rounded-md bg-secondary-300 duration-200 active:bg-secondary-500 sm:hover:bg-secondary-400 p-2" onClick={() => {copy(account.accountEmail)}}>
             <Image src={"/email.svg"} height={"18"} width={"18"} alt={"email icon"}/>
           </button>
-          <button className="rounded-md bg-gray-300 duration-200 active:bg-gray-500 sm:hover:bg-gray-400 p-2" onClick={() => {handleShowModal(account)}}>
+          <button className="rounded-md bg-secondary-300 duration-200 active:bg-secondary-500 sm:hover:bg-secondary-400 p-2" onClick={() => {handleShowModal(account)}}>
             <Image src={"/edit.svg"} height={"18"} width={"18"} alt={"edit icon"}/>
           </button>
         </div>
@@ -242,14 +242,18 @@ export default function Accounts() {
           animationDelay="animation-delay-1000"
         >
           <form className="mt-2" onSubmit={async (event) => {addAccount(event)}}>
-            <input className="bg-sky-200 focus:bg-sky-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" type="text" name="username" placeholder="username"/>
-            <input className="bg-sky-200 focus:bg-sky-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" type="email" name="email" placeholder="email"/>
-            <input className="bg-sky-200 focus:bg-sky-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
-            <input className="bg-sky-200 focus:bg-sky-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="service" placeholder="service"/>
+            <span className="text-sm">Username</span>
+            <input className="bg-primary-200 focus:bg-primary-300 duration-200 text-primary-text text-lg px-3 py-1 rounded-md w-full mb-2" type="text" name="username" placeholder="username"/>
+            <span className="text-sm">Email address</span>
+            <input className="bg-primary-200 focus:bg-primary-300 duration-200 text-primary-text text-lg px-3 py-1 rounded-md w-full mb-2" type="email" name="email" placeholder="email"/>
+            <span className="text-sm">Password</span>
+            <input className="bg-primary-200 focus:bg-primary-300 duration-200 text-primary-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
+            <span className="text-sm">Service</span>
+            <input className="bg-primary-200 focus:bg-primary-300 duration-200 text-primary-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="service" placeholder="service"/>
 
             <p className="mt-2">You might need to refresh your page to see changes take affect.</p>
 
-            <button className="bg-sky-200 active:bg-secondary-darker sm:hover:bg-secondary transition-all duration-200 text-text text-lg px-3 py-1 rounded-md w-full mt-3" type="submit">Add Account</button>
+            <button className="bg-primary-200 active:bg-secondary-darker sm:hover:bg-secondary transition-all duration-200 text-primary-text text-lg px-3 py-1 rounded-md w-full mt-3" type="submit">Add Account</button>
           </form>
         </Card>
 
@@ -262,10 +266,10 @@ export default function Accounts() {
           <p className="mb-2">{accounts.length} account(s) found.</p>
           {mapAccounts()}
           <div className="flex gap-2 flex-row mt-2">
-            <button className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2" onClick={() => {accountsPageNumber === 1 ? null : setAccountsPageNumber(accountsPageNumber-1)}}>
+            <button className="rounded-md bg-secondary-200 duration-200 active:bg-secondary-400 sm:hover:bg-secondary-300 p-2" onClick={() => {accountsPageNumber === 1 ? null : setAccountsPageNumber(accountsPageNumber-1)}}>
               <Image src={"/arrow-backward.svg"} height={"18"} width={"18"} alt={"back page button"}/>
             </button>
-            <button className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2" onClick={() => {accountsPageNumber === accountsPageMaxIndex ? null : setAccountsPageNumber(accountsPageNumber+1)}}>
+            <button className="rounded-md bg-secondary-200 duration-200 active:bg-secondary-400 sm:hover:bg-secondary-300 p-2" onClick={() => {accountsPageNumber === accountsPageMaxIndex ? null : setAccountsPageNumber(accountsPageNumber+1)}}>
               <Image src={"/arrow-forward.svg"} height={"18"} width={"18"} alt={"next page button"}/>
             </button> 
           </div>
@@ -274,39 +278,39 @@ export default function Accounts() {
       </div>
 
       <dialog ref={accountModal} className="rounded-xl">
-        <div className="bg-gray-100 drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400">
+        <div className="bg-secondary-100 text-text drop-shadow-xl p-4 rounded-xl flex flex-col gap-2 animation-delay-1400">
           <h3 className="text-xl font-semibold mb-2 text-secondary">Edit account</h3>
           <form method="dialog" onSubmit={(event) => {handleAccountEdit(event)}}>
             <span className="text-sm">Username</span>
-            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="username" type="username" defaultValue={accountToEdit?.accountUsername} ref={usernameField} placeholder="username"/>
+            <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="username" type="username" defaultValue={accountToEdit?.accountUsername} ref={usernameField} placeholder="username"/>
             <span className="text-sm">Email address</span>
-            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="email" type="email" defaultValue={accountToEdit?.accountEmail} ref={emailField} placeholder="email"/>
+            <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="email" type="email" defaultValue={accountToEdit?.accountEmail} ref={emailField} placeholder="email"/>
             <span className="text-sm">Password</span>
             <div className="flex gap-2">
-              <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="password" required type="password" defaultValue={accountToEdit?.accountPassword} ref={passwordField} placeholder="password"/>
-              <a className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 mb-2 flex justify-center items-center" onClick={() => {togglePasswordVisibility()}}>
+              <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="password" required type="password" defaultValue={accountToEdit?.accountPassword} ref={passwordField} placeholder="password"/>
+              <a className="rounded-md bg-secondary-200 duration-200 active:bg-secondary-400 sm:hover:bg-secondary-300 p-2 mb-2 flex justify-center items-center" onClick={() => {togglePasswordVisibility()}}>
                 <Image src={"/eye-open.svg"} height={"22"} width={"22"} alt={"eye open icon"}/>
               </a>
             </div>
             <span className="text-sm">Service</span>
-            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="service" required type="service" defaultValue={accountToEdit?.accountService} ref={serviceField} placeholder="service"/>
+            <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" name="service" required type="service" defaultValue={accountToEdit?.accountService} ref={serviceField} placeholder="service"/>
 
             <p className="mt-2 text-secondary">You might need to refresh your page to see changes take affect.</p>
 
             <div className="flex gap-2">
-              <button className="bg-blue-300 active:bg-blue-500 sm:hover:bg-blue-400 duration-200 text-lg px-3 py-1 rounded-md w-full mt-3" type="submit">Save</button>
-              <button className="bg-gray-200 active:bg-gray-400 sm:hover:bg-gray-300 duration-200 text-lg px-3 py-1 rounded-md w-full mt-3" type="reset">Revert</button>
+              <button className="bg-primary-100 text-primary-text active:bg-primary-300 sm:hover:bg-primary-200 duration-200 text-lg px-3 py-1 rounded-md w-full mt-3" type="submit">Save</button>
+              <button className="bg-secondary-200 active:bg-secondary-400 sm:hover:bg-secondary-300 duration-200 text-lg px-3 py-1 rounded-md w-full mt-3" type="reset">Revert</button>
             </div>
           </form>
         </div>
       </dialog>
 
       <dialog ref={infoModal} className="rounded-xl w-96 fadeIn delay-0">
-        <div className="bg-gray-100 drop-shadow-xl p-4 rounded-xl flex flex-col gap-2">
+        <div className="bg-secondary-100 text-text drop-shadow-xl p-4 rounded-xl flex flex-col gap-2">
           <div className="flex items-start flex-row gap-1">
             <h3 className="text-2xl font-semibold">Info</h3>
             <form method="dialog" className="flex ml-auto">
-              <button className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-1">
+              <button className="rounded-md bg-secondary-200 duration-200 active:bg-secondary-400 sm:hover:bg-secondary-300 p-1">
                 <Image src={"/close.svg"} height={"20"} width={"20"} alt={"close icon"} className="fill-secondary"/>
               </button>              
             </form>

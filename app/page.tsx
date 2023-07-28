@@ -22,15 +22,15 @@ export default function Home() {
   return (
     <>
       <h1 className="text-4xl font-semibold fadeIn mb-2">
-        Welcome to <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">ManagerX</span>
+        Welcome to <span className="bg-gradient-to-r from-primary-100 to-accent-100 bg-clip-text text-transparent">ManagerX</span>
         </h1>
       <p className="fadeIn animation-delay-600">The All-Purpose Manager for Enhanced Productivity and Clarity.</p>
 
       <Divider height="h-10"/>
 
       <div className="flex flex-row gap-2">
-        <a className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-800" href="/user/register">Register</a>
-        <a className="bg-neutral-200 transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-900" href="/user/login">Login</a>
+        <a className="bg-primary-100 text-primary-text sm:hover:shadow-2xl transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-800" href="/user/register">Register</a>
+        <a className="bg-secondary-100 transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-900" href="/user/login">Login</a>
       </div>
 
       <Divider height="h-10"/>
@@ -40,9 +40,9 @@ export default function Home() {
         <Card 
           title="Account management" 
           animationDelay={"animation-delay-1000"}
-          type={"primary"}
+          type={"secondary"}
         >
-          <p className="marker:text-blue-400 list-item text-lg ml-5">Remove the hassle of remembering account details. Encrypted and safe, forever.</p>
+          <p className="marker:text-accent-100 list-item text-lg ml-5">Remove the hassle of remembering account details. Encrypted and safe, forever.</p>
         </Card>
 
 
@@ -51,7 +51,7 @@ export default function Home() {
           animationDelay={"animation-delay-1200"}
           type={"secondary"}
         >
-          <p className="marker:text-green-400 list-item text-lg ml-5">Create contacts for people you know. Names, phone numbers, social medias, etc.</p>
+          <p className="marker:text-accent-100 list-item text-lg ml-5">Create contacts for people you know. Names, phone numbers, social medias, etc.</p>
         </Card>
 
         <Card 
