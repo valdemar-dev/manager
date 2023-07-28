@@ -34,9 +34,9 @@ export default function Login() {
     }
 
     const data = {
-      username: hashText(target.username.value).output,
-      email: hashText(target.email.value).output,
-      password: hashText(target.password.value).output,
+      username: hashText(target.username.value.replace(/\s/g, "")).output,
+      email: hashText(target.email.value.replace(/\s/g, "")).output,
+      password: hashText(target.password.value.replace(/\s/g, "")).output,
       browserName: browser?.name || "NULL",
       os: browser?.os || "NULL",
     };
@@ -67,17 +67,7 @@ export default function Login() {
   }
 
   return (
-    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 box-border">
-      { /* navigation menu */}
-      <div className="items-center flex gap-2">
-        <Link href="/dashboard" className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 fadeIn animation-delay-400">
-          <Image src={"/home.svg"} height={"22"} width={"22"} alt={"home button"}/>
-        </Link>
-        <span className="font-semibold ml-auto text-lg fadeIn">ManagerX</span>
-      </div>
-
-      <Divider height="h-10"/>
-
+    <>
       <div>
         <h1 className="text-4xl font-semibold fadeIn animation-delay-400">Login</h1>
         <p className="fadeIn animation-delay-800">Login to ManagerX</p>
@@ -97,12 +87,12 @@ export default function Login() {
             <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="email"/>
             <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
 
-            <p className="mt-2 unobsuctive">
+            <p className="my-2 unobsuctive">
               Don't have an account? <br/>
               <Link href="/user/register" className="text-accent font-semibold">Register</Link>
             </p>
 
-            <button className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md fadeIn animation-delay-800 mt-2 font-semibold" type="submit">Login</button>
+            <button className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md mt-2 font-semibold" type="submit">Login</button>
           </form>
         </Card>
       </div>
@@ -121,6 +111,6 @@ export default function Login() {
           <p className="text-secondary text-lg rounded-lg">{infoText}</p>
         </div>
       </dialog>
-    </main>
+    </>
   )
 }

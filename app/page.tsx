@@ -20,7 +20,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl p-4 pt-12 box-border">
+    <>
       <h1 className="text-4xl font-semibold fadeIn mb-2">
         Welcome to <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">ManagerX</span>
         </h1>
@@ -40,9 +40,9 @@ export default function Home() {
         <Card 
           title="Account management" 
           animationDelay={"animation-delay-1000"}
-          type={"secondary"}
+          type={"primary"}
         >
-          <p className="marker:text-green-400 list-item text-lg ml-5">Remove the hassle of remembering account details. Encrypted and safe, forever.</p>
+          <p className="marker:text-blue-400 list-item text-lg ml-5">Remove the hassle of remembering account details. Encrypted and safe, forever.</p>
         </Card>
 
 
@@ -70,6 +70,6 @@ export default function Home() {
           <p className="marker:text-green-400 list-item text-lg ml-5">Releases in 1.0</p>
         </Card>
       </div>
-    </main>
+    </>
   )
 }

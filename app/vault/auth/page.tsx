@@ -54,17 +54,7 @@ export default function VaultAuth() {
   };
 
   return (
-    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 box-border">
-      { /* navigation menu */}
-      <div className="items-center flex gap-2">
-        <Link href="/dashboard" className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 fadeIn animation-delay-400">
-          <Image src={"/home.svg"} height={"22"} width={"22"} alt={"home button"}/>
-        </Link>
-        <span className="font-semibold ml-auto text-lg fadeIn">ManagerX</span>
-      </div>
-
-      <Divider height="h-10"/>
-
+    <>
       <h1 className="text-2xl font-semibold fadeIn animation-delay-400">Hold on!</h1>
       <p className="flex items-center gap-2 text-lg mb-6 rounded-lg fadeIn animation-delay-800">Your vault may contain potentially sensitive information.</p>
 
@@ -96,6 +86,6 @@ export default function VaultAuth() {
           <p className="text-secondary text-lg rounded-lg">{infoText}</p>
         </div>
       </dialog>
-    </main>
+    </>
   )
 }

@@ -35,7 +35,7 @@ export default function Dashboard() {
   }
 
   return (
-    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 pt-12 box-border">
+    <>
       <h1 className="text-4xl font-semibold fadeIn">Welcome back, {username}</h1>
       <div className="flex flex-row gap-1">
       <p className="fadeIn animation-delay-600 items-start">The time is</p> 
@@ -71,6 +71,6 @@ export default function Dashboard() {
           <p className="text-lg">Releases in 1.0</p>
         </Card>
       </div>
-    </main>
+    </>
   )
 }

@@ -62,10 +62,14 @@ model Account {
 //who wrote it. this allows the user to come back and re-edit the file
 //and also lets me encrypt it and keep it hidden from everyone else
 model Notepad {
-  id              Int     @id @default(autoincrement())
+  id          String     @id @default(uuid())
+  title       String
+  content     String
+  createdAt   DateTime @default(now())
+  isPublic    Boolean @default(false)
 
-  user            User    @relation(fields: [userId], references: [id])
-  userId          String
+  author      User    @relation(fields: [authorId], references: [id])
+  authorId    String
 }
 
 //TASKS

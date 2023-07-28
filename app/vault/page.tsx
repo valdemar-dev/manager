@@ -117,17 +117,7 @@ export default function Vault() {
   };
 
   return (
-    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 box-border">
-      { /* navigation menu */}
-      <div className="items-center flex gap-2">
-        <Link href="/dashboard" className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 fadeIn animation-delay-400">
-          <Image src={"/home.svg"} height={"22"} width={"22"} alt={"home button"}/>
-        </Link>
-        <span className="font-semibold ml-auto text-lg fadeIn">ManagerX</span>
-      </div>
-
-      <div className="h-10"></div>
-
+    <>
       <div>
         <h1 className="text-4xl font-semibold fadeIn animation-delay-400">The Vault</h1>
         <p className="fadeIn animation-delay-800">All your data, kept safe.</p>
@@ -163,6 +153,6 @@ export default function Vault() {
           <Link href="/vault/accounts" className="mt-2 text-accent font-semibold">Go to Accounts</Link>
         </Card>
       </div>
-    </main>
+    </>
   )
 }

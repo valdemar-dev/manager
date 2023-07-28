@@ -67,17 +67,7 @@ export default function Register() {
   }
 
   return (
-    <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 box-border">
-      { /* navigation menu */}
-      <div className="items-center flex gap-2">
-        <Link href="/dashboard" className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-2 fadeIn animation-delay-400">
-          <Image src={"/home.svg"} height={"22"} width={"22"} alt={"home button"}/>
-        </Link>
-        <span className="font-semibold ml-auto text-lg fadeIn">ManagerX</span>
-      </div>
-
-      <Divider height="h-10"/>
-
+    <>
       <div>
         <h1 className="text-4xl font-semibold fadeIn animation-delay-400">Register</h1>
         <p className="fadeIn animation-delay-800">Create an account today.</p>
@@ -92,16 +82,21 @@ export default function Register() {
             type="secondary"
         >
           <form className="mt-2" onSubmit={async (event) => {await handleRegister(event)}}>
+            <span className="text-sm">3-20 characters. No spaces allowed.</span>
             <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="username" placeholder="username"/>
+            <span className="text-sm">You will need to confirm this.</span>
             <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="email"/>
+            <span className="text-sm">At least 8 characters, 1 capital letter and 1 number.</span>
             <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
 
-            <p className="mt-2 unobsuctive">
+            <p className="my-2 unobsuctive">
               Have an account already? <br/>
               <Link href="/user/login" className="text-accent font-semibold">Login</Link>
             </p>
 
-            <button className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md fadeIn animation-delay-800 mt-2 font-semibold" type="submit">Register</button>
+            <button className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md mt-2 font-semibold" type="submit">Register</button>
+
+            <p className="mt-2 text-sm">By registering, you agree to our <Link href="/privacy" className="font-semibold">Privacy policy</Link></p>
           </form>
         </Card>
       </div>
@@ -120,6 +115,6 @@ export default function Register() {
           <p className="text-secondary text-lg rounded-lg">{infoText}</p>
         </div>
       </dialog>
-    </main>
+    </>
   )
 }
