@@ -252,7 +252,7 @@ export default function Account() {
             </button>
 
             <button onClick={() => {setColorscheme("bluehour")}}  className="h-20 w-2/5 rounded-lg border-4 box-border border-sky-300 bg-slate-950 text-neutral-50">
-              <span className="border-b-2 border-amber-500">Blue hour</span>
+              <span className="border-b-2 border-amber-500">Paulios</span>
             </button>
           </div>
         </Card>
