@@ -69,6 +69,8 @@ model Notepad {
   contentAuthTag  String?
   iv              String?
   createdAt       DateTime @default(now())
+  authorUsername  String
+  usernameAuthTag String? 
   isPublic        Boolean @default(false)
 
   author      User    @relation(fields: [authorId], references: [id])

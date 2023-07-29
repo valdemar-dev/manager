@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
     !req.notepadTitle ||
     !req.notepadContent ||
     !req.notepadId || 
+    !req.authorUsername ||
     req.isPublic === undefined
   ) {
     return new Response("Invalid form data.", {
@@ -29,7 +30,8 @@ export async function POST(request: NextRequest) {
     if (
       !req.titleAuthTag ||
       !req.iv ||
-      !req.contentAuthTag
+      !req.contentAuthTag ||
+      !req.usernameAuthTag
     ) {
       return new Response("Invalid form data.", {
         status: 422,
@@ -52,6 +54,9 @@ export async function POST(request: NextRequest) {
         content: req.notepadContent,
         titleAuthTag: req.titleAuthTag,
         contentAuthTag: req.contentAuthTag,
+        usernameAuthTag: req.usernameAuthTag,
+        authorUsername: req.authorUsername,
+
         iv: req.iv,
       }
     }) || null;
@@ -73,6 +78,7 @@ export async function POST(request: NextRequest) {
     data: {
       title: req.notepadTitle,
       content: req.notepadContent,
+      authorUsername: req.authorUsername,
     }
   }) || null;
 

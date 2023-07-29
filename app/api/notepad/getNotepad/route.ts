@@ -22,16 +22,9 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const notepad = await prisma.notepad.findFirst({
+  const notepad = await prisma.notepad.findUnique({
     where: {
-      AND: [
-        {
-          id: req.notepadId,
-        },
-        {
-          authorId: session.userId,
-        },
-      ],
+      id: req.notepadId,
     },
   }) || null;
 
@@ -41,5 +34,13 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  return new Response(JSON.stringify(notepad));
+  if (notepad.isPublic) {
+    return new Response(JSON.stringify({ notepad: notepad, userId: session.userId, }));
+  }
+
+  if (!notepad.isPublic && notepad.authorId !== session.userId) {
+    return new Response("You don't have access to this!", {
+      status: 401,
+    });
+  }
 }

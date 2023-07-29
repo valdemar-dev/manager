@@ -32,9 +32,14 @@ export default function Notepad() {
 
   useEffect(() => {
     const notepadKey = localStorage.getItem("notepadKey");
+    const username = localStorage.getItem("username");
+
+    if (!username) {
+      return router.push("/user/login");
+    }
 
     if (!notepadKey) {
-      return router.replace("/notepad/auth");
+      return router.push("/notepad/auth");
     }
   }, []);
 
@@ -60,12 +65,14 @@ export default function Notepad() {
     }
 
     const notepadKey = localStorage.getItem("notepadKey")!;
+    const username = localStorage.getItem("username")!;
 
     let data = {};
 
     if (target.isPublic.checked === false) {
       const encryptedNotepadTitle = encrypt(target.notepadTitle.value, notepadKey, iv);
       const encryptedNotepadContent = encrypt("Click here to edit.", notepadKey, iv);
+      const encryptedAuthorUsername = encrypt(username, notepadKey, iv);
   
       data = {
         notepadTitle: encryptedNotepadTitle.encryptedText,
@@ -74,12 +81,15 @@ export default function Notepad() {
         contentAuthTag: encryptedNotepadContent.authTag,
         iv: iv.toString("hex"),
         isPublic: target.isPublic.checked,
+        authorUsername: encryptedAuthorUsername.encryptedText,
+        usernameAuthTag: encryptedAuthorUsername.authTag,
       };
     } else {
       data = {
         notepadTitle: target.notepadTitle.value,
         notepadContent: "Edit me!",
         isPublic: true,
+        authorUsername: username,
       };
     }
 

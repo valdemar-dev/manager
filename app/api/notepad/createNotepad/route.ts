@@ -16,7 +16,8 @@ export async function POST(request: NextRequest) {
   const req = await request.json();
 
   if (
-    !req.notepadTitle
+    !req.notepadTitle ||
+    !req.authorUsername
   ) {
     return new Response("Invalid form data.", {
       status: 422,
@@ -28,7 +29,8 @@ export async function POST(request: NextRequest) {
       !req.titleAuthTag ||
       !req.iv ||
       !req.notepadContent ||
-      !req.contentAuthTag
+      !req.contentAuthTag ||
+      !req.usernameAuthTag
     ) {
       return new Response("Invalid form data.", {
         status: 422,
@@ -44,6 +46,8 @@ export async function POST(request: NextRequest) {
         iv: req.iv,
         authorId: session.userId,
         isPublic: false,
+        usernameAuthTag: req.usernameAuthTag,
+        authorUsername: req.authorUsername,
       },
     });
 
@@ -55,6 +59,7 @@ export async function POST(request: NextRequest) {
       title: req.notepadTitle,
       authorId: session.userId,
       isPublic: req.isPublic,
+      authorUsername: req.authorUsername
     }
   });
 

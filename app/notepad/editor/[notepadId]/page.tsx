@@ -13,6 +13,8 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
   const [notepad, setNotepad] = useState<any>();
   const [loading, setLoading] = useState(true);
 
+  const [userId, setUserId] = useState("");
+
   const notepadTitle = useRef<any>();
   const notepadContent = useRef<any>();
 
@@ -89,14 +91,18 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
         return router.push("/notepad/editor")
       }
 
-      let notepad = await response.json();
+      const res = await response.json();
 
+      let notepad = res.notepad;
+      
       notepad.author = username;
       if (notepad.isPublic === false) {
         notepad.title = decrypt(notepad.title, notepadKey, notepad.iv, notepad.titleAuthTag);
+        notepad.authorUsername = decrypt(notepad.authorUsername, notepadKey, notepad.iv, notepad.usernameAuthTag);
         notepad.content = decrypt(notepad.content, notepadKey, notepad.iv, notepad.contentAuthTag);
       }
-
+      
+      setUserId(res.userId);
       setNotepad(notepad);
       setLoading(false);
     });
@@ -115,6 +121,7 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
     if (notepad.isPublic === false) {
       const encryptedNotepadTitle = encrypt(notepadTitle.current!.value, notepadKey, iv);
       const encryptedNotepadContent = encrypt(notepadContent.current!.value, notepadKey, iv);
+      const encryptedAuthorUsername = encrypt(notepad.authorUsername, notepadKey, iv);
       
       data = {
         notepadTitle: encryptedNotepadTitle.encryptedText,
@@ -124,6 +131,8 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
         titleAuthTag: encryptedNotepadTitle.authTag,
         iv: iv.toString("hex"),
         contentAuthTag: encryptedNotepadContent.authTag,
+        authorUsername: encryptedAuthorUsername.encryptedText,
+        usernameAuthTag: encryptedAuthorUsername.authTag,
       };
     } else {
       data = {
@@ -131,6 +140,7 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
         isPublic: notepad.isPublic,
         notepadContent: notepadContent.current!.value,
         notepadId: notepad.id,
+        authorUsername: notepad.authorUsername,
       };
     }
 
@@ -160,14 +170,17 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
         <h1 className="text-4xl font-semibold fadeIn animation-delay-400">
           <TextareaAutosize ref={notepadTitle} className="bg-transparent overflow-hidden resize-none h-max" defaultValue={notepad?.title}/>
         </h1>
-        <p className="fadeIn animation-delay-800">By: {notepad.author}</p>
+        <p className="fadeIn animation-delay-800">By: {notepad.authorUsername}</p>
       </div>
 
+      <div className={`${notepad.userId !== userId ? "hidden": "block"}`}>
+
       <Divider height="h-10"/>
+      </div>
 
       <div className="flex flex-row gap-2">
-        <button onClick={() => {handleSave()}} className="bg-primary-100 text-primary-text sm:hover:shadow-2xl transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-800">Save </button>
-        <button onClick={() => {handleReset()}} className="bg-secondary-100 transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-900">Revert</button>
+        <button onClick={() => {handleSave()}} disabled={notepad.userId !== userId} className="bg-primary-100 disabled:hidden text-primary-text sm:hover:shadow-2xl transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-800">Save </button>
+        <button onClick={() => {handleReset()}} disabled={notepad.userId !== userId} className="bg-secondary-100 transition-all duration-200 disabled:hidden font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-900">Revert</button>
       </div>
 
       <Divider height="h-10"/>
@@ -178,7 +191,7 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
           animationDelay="animation-delay-1000"
           type="secondary"
         >
-          <TextareaAutosize ref={notepadContent} className="bg-secondary-200 max-h-screen px-2 pb-6 py-1 text-lg rounded-md focus:bg-secondary-300 duration-200 resize-none h-max" defaultValue={notepad?.content}/>
+          <TextareaAutosize disabled={notepad.userId !== userId} ref={notepadContent} className="bg-secondary-200 max-h-screen px-2 pb-6 py-1 text-lg rounded-md focus:bg-secondary-300 duration-200 resize-none h-max" defaultValue={notepad?.content}/>
         </Card>
       </div>
 
