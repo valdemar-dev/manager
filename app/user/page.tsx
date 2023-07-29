@@ -124,8 +124,8 @@ export default function Account() {
     } else {
       localStorage.setItem("theme", colorscheme);
     }
-
-    router.refresh();
+    
+    window.location.reload();
   };
 
   if (loading) {
