@@ -50,7 +50,7 @@ export default function Dashboard() {
           type="primary"
           animationDelay="animation-delay-1000"
         >
-          <p>Your most valuable data kept encrypted in one place. Access from anywhere in the world.</p>
+          <p>Your passwords and contacts kept safe and fully encrypted. Accessible by only you.</p>
           <Link href="/vault/" className="mt-2 font-semibold">Enter your Vault</Link>
         </Card>
 
@@ -64,9 +64,22 @@ export default function Dashboard() {
         </Card>
 
         <Card
-          title="Projects"
+          title="Notepad"
           type="secondary"
           animationDelay="animation-delay-1400"
+        >
+          <p>
+            Take private and encrypted notes whenever, wherever. 
+            Up to 10 thousand characters per notepad. 
+            Now with full markdown support.
+          </p>
+          <Link href="/notepad/editor" className=" mt-auto font-semibold">Go to Notes</Link>
+        </Card>
+
+        <Card
+          title="Projects"
+          type="secondary"
+          animationDelay="animation-delay-1600"
         >
           <p className="text-lg">Releases in 1.0</p>
         </Card>
