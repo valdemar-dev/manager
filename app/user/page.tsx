@@ -10,8 +10,26 @@ import { useEffect, useRef, useState } from "react";
 export default function Account() {
   const router = useRouter();
 
+  //info modal stuff
   const infoModal = useRef<any>();
-  const [infoText, setInfoText] = useState<string>("")
+  const [infoText, setModalText] = useState<string>("");
+
+  const showModal = (duration: number) => {
+    showModal(1000)
+    infoModal.current!.className = "rounded-xl w-96 fadeIn delay-0";
+
+    setTimeout(() => {
+      infoModal.current!.className = "rounded-xl w-96 fadeOut delay-0";
+    
+      setTimeout(() => {
+        try {
+          infoModal.current!.close();
+        } catch {
+          return;
+        }
+      }, 1000);
+    }, duration + 1000);
+  };
 
   const [sessions, setSessions] = useState<any[]>([]);
   const [username, setUsername] = useState("");
@@ -101,16 +119,16 @@ export default function Account() {
       setSessions(sessions);
 
       if (sessions.length < 1) {
-        setInfoText("No sessions found. Redirecting to login page.");
-        infoModal.current!.showModal();
+        setModalText("No sessions found. Redirecting to login page.");
+        showModal(1000)
 
         setTimeout(() => {
           router.push("/user/login");
         }, 2000);
       }
 
-      setInfoText(await response.text());
-      return infoModal.current!.showModal();
+      setModalText(await response.text());
+      return showModal(1000)
     });
   };
 

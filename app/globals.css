@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --accent-100: #000000;
+}
+
 @layer base {
   html[data-theme='light'] {
     --background-color: #fafafa;
@@ -212,4 +216,36 @@ input:focus {
 
 * {
   border-color: #fafafa;
+}
+
+:focus {
+  outline: none;
+}
+
+input[type=checkbox] {
+  height: 20px;
+  width: 20px;
+  appearance: none;
+  position: relative;
+}
+
+input[type=checkbox]::before {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  content: "";
+  border-radius: 3px;
+  background-color: var(--secondary-100);
+  transition-duration: 100ms;
+  transition-timing-function: ease;
+  border-width: 4px;
+  border-color: var(--secondary-100);
+}
+
+
+input[type="checkbox"]:checked::before {
+  background-color: var(--accent-100);
 }

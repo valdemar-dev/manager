@@ -96,10 +96,10 @@ export default function Accounts() {
 
     const vaultKey = sessionStorage.getItem("vaultKey")!;
 
-    const encryptedUsername = encrypt(target.username.value, vaultKey, iv)
-    const encryptedEmail = encrypt(target.email.value, vaultKey, iv)
-    const encryptedPassword = encrypt(target.password.value, vaultKey, iv)
-    const encryptedService = encrypt(target.service.value, vaultKey, iv)
+    const encryptedUsername = encrypt(target.username.value, vaultKey, iv);
+    const encryptedEmail = encrypt(target.email.value, vaultKey, iv);
+    const encryptedPassword = encrypt(target.password.value, vaultKey, iv);
+    const encryptedService = encrypt(target.service.value, vaultKey, iv);
     const encryptedCreationTimestamp = encrypt(Date.now().toString(), vaultKey, iv);
 
     const data = {

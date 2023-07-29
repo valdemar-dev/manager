@@ -25,7 +25,11 @@ export default function Login() {
       infoModal.current!.className = "rounded-xl w-96 fadeOut delay-0";
     
       setTimeout(() => {
-        infoModal.current!.close().catch(() => {return;});
+        try {
+          infoModal.current!.close();
+        } catch {
+          return;
+        }
       }, 1000);
     }, duration + 1000);
   };
@@ -88,7 +92,6 @@ export default function Login() {
       </div>
 
       <Divider height="h-10"/>
-
 
       <div className="grid md:grid-cols-2 gap-10">
         <Card

@@ -62,11 +62,14 @@ model Account {
 //who wrote it. this allows the user to come back and re-edit the file
 //and also lets me encrypt it and keep it hidden from everyone else
 model Notepad {
-  id          String     @id @default(uuid())
-  title       String
-  content     String
-  createdAt   DateTime @default(now())
-  isPublic    Boolean @default(false)
+  id              String     @id @default(uuid())
+  title           String
+  titleAuthTag    String?
+  content         String?
+  contentAuthTag  String?
+  iv              String?
+  createdAt       DateTime @default(now())
+  isPublic        Boolean @default(false)
 
   author      User    @relation(fields: [authorId], references: [id])
   authorId    String
