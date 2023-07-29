@@ -5,6 +5,7 @@ import Link from "next/navigation";
 import Image from "next/image";
 import { Inter } from 'next/font/google'
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,9 +15,13 @@ interface Props {
 
 export default function LayoutProvider(props: Props) {
   const pathname = usePathname();
+  const router = useRouter();
 
-  let theme: string = "dark";
-  theme = localStorage.getItem("theme") || "dark";
+  const [theme, setTheme] = useState("dark");
+
+  useEffect(() => {
+    setTheme(localStorage.getItem("theme") || "dark");
+  }, [router]);
 
   return (
     <html suppressHydrationWarning={true} data-theme={theme!}>
