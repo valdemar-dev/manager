@@ -13,8 +13,22 @@ export default function Login() {
   const browser = detect();
   const router = useRouter();
   
+  //info modal stuff
   const infoModal = useRef<any>();
-  const [infoText, setInfoText] = useState<string>("");
+  const [infoText, setModalText] = useState<string>("");
+
+  const showModal = (duration: number) => {
+    infoModal.current!.showModal();
+    infoModal.current!.className = "rounded-xl w-96 fadeIn delay-0";
+
+    setTimeout(() => {
+      infoModal.current!.className = "rounded-xl w-96 fadeOut delay-0";
+    
+      setTimeout(() => {
+        infoModal.current!.close().catch(() => {return;});
+      }, 1000);
+    }, duration + 1000);
+  };
 
   useEffect(() => {
     fetch("/api/user/getSessionList").then((response) => {
@@ -51,18 +65,18 @@ export default function Login() {
 
     await fetch("/api/user/login", options).then(async (response) => {
       if (!response.ok) {
-        setInfoText(await response.text());
-        return infoModal.current!.showModal();
-       }
+        setModalText(await response.text());
+        return showModal(2000);
+      }
 
       localStorage.setItem("username", target.username.value);
 
-      setInfoText(await response.text());
-      infoModal.current!.showModal();
+      setModalText(await response.text());
+      showModal(1000);
 
       setTimeout(() => {
         router.push("/dashboard");
-      }, 2000);
+      }, 3000);
     })
   }
 
@@ -83,31 +97,25 @@ export default function Login() {
           type="secondary"
         >
           <form className="mt-2" onSubmit={async (event) => {await handleLogin(event)}}>
-            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="username" placeholder="username"/>
-            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="email"/>
-            <input className="bg-gray-200 focus:bg-gray-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
+            <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="username" placeholder="username"/>
+            <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="email"/>
+            <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
 
             <p className="my-2 unobsuctive">
               Don't have an account? <br/>
               <Link href="/user/register" className="text-accent font-semibold">Register</Link>
             </p>
 
-            <button className="bg-blue-300 sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md mt-2 font-semibold" type="submit">Login</button>
+            <button className="bg-primary-100 text-primary-text sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md mt-2 font-semibold" type="submit">Login</button>
           </form>
         </Card>
       </div>
 
       <dialog ref={infoModal} className="rounded-xl w-96 fadeIn delay-0">
-        <div className="bg-gray-100 drop-shadow-xl p-4 rounded-xl flex flex-col gap-2">
+        <div className="bg-secondary-100 text-text drop-shadow-xl p-4 rounded-xl flex flex-col gap-2">
           <div className="flex items-start flex-row gap-1">
             <h3 className="text-2xl font-semibold">Info</h3>
-            <form method="dialog" className="flex ml-auto">
-              <button className="rounded-md bg-gray-200 duration-200 active:bg-gray-400 sm:hover:bg-gray-300 p-1">
-                <Image src={"/close.svg"} height={"20"} width={"20"} alt={"close icon"} className="fill-secondary"/>
-              </button>              
-            </form>
           </div>
-
           <p className="text-secondary text-lg rounded-lg">{infoText}</p>
         </div>
       </dialog>

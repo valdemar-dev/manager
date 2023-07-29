@@ -39,7 +39,7 @@ export default function Dashboard() {
       <h1 className="text-4xl font-semibold fadeIn">Welcome back, {username}</h1>
       <div className="flex flex-row gap-1">
       <p className="fadeIn animation-delay-600 items-start">The time is</p> 
-      <p className="fadeIn animation-delay-1200 font-semibold text-green-500">{time}</p>
+      <p className="fadeIn animation-delay-1200 font-semibold text-accent-100">{time}</p>
       </div>
 
       <Divider height="h-10"/>
