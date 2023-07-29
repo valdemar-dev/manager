@@ -152,7 +152,8 @@ export default function Account() {
           <p className="unobstructive text-secondary mb-2">{user?.role}</p>
 
           <p className="text-lg text-secondary">Plan: <span className="font-bold">{user?.plan}</span></p>
-          <p className="text-lg text-secondary">Joined: <span className="font-bold">{new Date(user?.createdAt || "0").toLocaleDateString()}</span></p>
+          <p className="text-lg text-secondary">Joined: <span
+           className="font-bold">{new Date(user?.createdAt || "0").toLocaleDateString()}</span></p>
         </Card>
 
         <Card
@@ -167,12 +168,12 @@ export default function Account() {
                   <div className="flex flex-row items-start">
                     <h3 className="text-lg font-semibold">{session.os}</h3>
                     <button className="ml-auto rounded-md bg-secondary-300 duration-200 active:bg-secondary-500 sm:hover:bg-secondary-400 p-2" onClick={() => {deleteSession([session.createdAt])}}>
-                    <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <g id="Interface / Trash_Full">
-                      <path id="Vector" d="M14 10V17M10 10V17M6 6V17.8C6 18.9201 6 19.4798 6.21799 19.9076C6.40973 20.2839 6.71547 20.5905 7.0918 20.7822C7.5192 21 8.07899 21 9.19691 21H14.8031C15.921 21 16.48 21 16.9074 20.7822C17.2837 20.5905 17.5905 20.2839 17.7822 19.9076C18 19.4802 18 18.921 18 17.8031V6M6 6H8M6 6H4M8 6H16M8 6C8 5.06812 8 4.60241 8.15224 4.23486C8.35523 3.74481 8.74432 3.35523 9.23438 3.15224C9.60192 3 10.0681 3 11 3H13C13.9319 3 14.3978 3 14.7654 3.15224C15.2554 3.35523 15.6447 3.74481 15.8477 4.23486C15.9999 4.6024 16 5.06812 16 6M16 6H18M18 6H20" stroke="var(--warning-100)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      </g>
-                    </svg>
-                    </button>
+                      <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="Interface / Trash_Full">
+                        <path id="Vector" d="M14 10V17M10 10V17M6 6V17.8C6 18.9201 6 19.4798 6.21799 19.9076C6.40973 20.2839 6.71547 20.5905 7.0918 20.7822C7.5192 21 8.07899 21 9.19691 21H14.8031C15.921 21 16.48 21 16.9074 20.7822C17.2837 20.5905 17.5905 20.2839 17.7822 19.9076C18 19.4802 18 18.921 18 17.8031V6M6 6H8M6 6H4M8 6H16M8 6C8 5.06812 8 4.60241 8.15224 4.23486C8.35523 3.74481 8.74432 3.35523 9.23438 3.15224C9.60192 3 10.0681 3 11 3H13C13.9319 3 14.3978 3 14.7654 3.15224C15.2554 3.35523 15.6447 3.74481 15.8477 4.23486C15.9999 4.6024 16 5.06812 16 6M16 6H18M18 6H20" stroke="var(--warning-100)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </g>
+                      </svg>
+                    </button> 
                   </div>
                   <p className="mt-2">Last active: {new Date(session.lastActive || "1000").toLocaleString()}</p>
                   
@@ -264,11 +265,19 @@ export default function Account() {
         >
           <div className="mt-2 flex flex-row flex-wrap gap-2">
             <button className="w-fit flex flex-row gap-2 font-semibold text-warning-100 items-center rounded-md bg-secondary-200 active:bg-secondary-400 duration-200 sm:hover:bg-secondary-400 p-2" onClick={() => {logout()}}>
-              <Image src={"/logout.svg"} height={"22"} width={"22"} alt={"deletion icon"}/> Log out
+            <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="Interface / Trash_Full">
+                  <path id="Vector" d="M14 10V17M10 10V17M6 6V17.8C6 18.9201 6 19.4798 6.21799 19.9076C6.40973 20.2839 6.71547 20.5905 7.0918 20.7822C7.5192 21 8.07899 21 9.19691 21H14.8031C15.921 21 16.48 21 16.9074 20.7822C17.2837 20.5905 17.5905 20.2839 17.7822 19.9076C18 19.4802 18 18.921 18 17.8031V6M6 6H8M6 6H4M8 6H16M8 6C8 5.06812 8 4.60241 8.15224 4.23486C8.35523 3.74481 8.74432 3.35523 9.23438 3.15224C9.60192 3 10.0681 3 11 3H13C13.9319 3 14.3978 3 14.7654 3.15224C15.2554 3.35523 15.6447 3.74481 15.8477 4.23486C15.9999 4.6024 16 5.06812 16 6M16 6H18M18 6H20" stroke="var(--warning-100)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </g>
+              </svg> Log out
             </button>
 
             <button className="w-fit flex flex-row gap-2 font-semibold text-warning-100 items-center rounded-md bg-secondary-200 active:bg-secondary-400 duration-200 sm:hover:bg-secondary-400 p-2" onClick={() => {deleteSession("all")}}>
-              <Image src={"/logout.svg"} height={"22"} width={"22"} alt={"deletion icon"}/> Kick all sessions
+              <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="Interface / Trash_Full">
+                  <path id="Vector" d="M14 10V17M10 10V17M6 6V17.8C6 18.9201 6 19.4798 6.21799 19.9076C6.40973 20.2839 6.71547 20.5905 7.0918 20.7822C7.5192 21 8.07899 21 9.19691 21H14.8031C15.921 21 16.48 21 16.9074 20.7822C17.2837 20.5905 17.5905 20.2839 17.7822 19.9076C18 19.4802 18 18.921 18 17.8031V6M6 6H8M6 6H4M8 6H16M8 6C8 5.06812 8 4.60241 8.15224 4.23486C8.35523 3.74481 8.74432 3.35523 9.23438 3.15224C9.60192 3 10.0681 3 11 3H13C13.9319 3 14.3978 3 14.7654 3.15224C15.2554 3.35523 15.6447 3.74481 15.8477 4.23486C15.9999 4.6024 16 5.06812 16 6M16 6H18M18 6H20" stroke="var(--warning-100)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </g>
+              </svg> Kick all sessions
             </button>
           </div>
         </Card>

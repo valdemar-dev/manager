@@ -59,7 +59,7 @@ export default function Home() {
           animationDelay={"animation-delay-1400"}
           type={"secondary"}
         >
-          <p className="marker:text-green-400 list-item text-lg ml-5">Planned for 1.1</p>
+          <p className="marker:text-accent-100 list-item text-lg ml-5">Planned for 1.1</p>
         </Card>
 
         <Card 
@@ -67,7 +67,7 @@ export default function Home() {
           animationDelay={"animation-delay-1600"}
           type={"secondary"}
         >
-          <p className="marker:text-green-400 list-item text-lg ml-5">Releases in 1.0</p>
+          <p className="marker:text-accent-100 list-item text-lg ml-5">Releases in 1.0</p>
         </Card>
       </div>
     </>

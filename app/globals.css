@@ -124,7 +124,7 @@
     --accent-400: #2563eb;
     --accent-500: #1d4ed8;
     --accent-600: #1e40af;
-    --warning-100: #fda4af;
+    --warning-100: #ff3e3e;
   }
 
   html[data-theme='bluehour'] {
