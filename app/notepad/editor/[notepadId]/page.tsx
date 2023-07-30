@@ -18,6 +18,9 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
   const notepadTitle = useRef<any>();
   const notepadContent = useRef<any>();
 
+  const [contentLength, setContentLength] = useState(0);
+  const [titleLength, setTitleLength] = useState(0);
+
   //info modal stuff
   const infoModal = useRef<any>();
   const [infoText, setModalText] = useState<string>("");
@@ -95,15 +98,19 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
 
       let notepad = res.notepad;
       
-      notepad.author = username;
       if (notepad.isPublic === false) {
         notepad.title = decrypt(notepad.title, notepadKey, notepad.iv, notepad.titleAuthTag);
         notepad.authorUsername = decrypt(notepad.authorUsername, notepadKey, notepad.iv, notepad.usernameAuthTag);
         notepad.content = decrypt(notepad.content, notepadKey, notepad.iv, notepad.contentAuthTag);
+      } else {
+        notepad.authorUsername = username;
       }
       
       setUserId(res.userId);
+
       setNotepad(notepad);
+      setContentLength(notepad.content.length);
+      setTitleLength(notepad.title.length);
       setLoading(false);
     });
   }, []);
@@ -168,19 +175,19 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
     <>
       <div>
         <h1 className="text-4xl font-semibold fadeIn animation-delay-400">
-          <TextareaAutosize ref={notepadTitle} className="bg-transparent overflow-hidden resize-none h-max" defaultValue={notepad?.title}/>
+          <TextareaAutosize ref={notepadTitle} className="bg-transparent overflow-hidden break-words resize-none w-full" defaultValue={notepad?.title}/>
         </h1>
         <p className="fadeIn animation-delay-800">By: {notepad.authorUsername}</p>
       </div>
 
-      <div className={`${notepad.userId !== userId ? "hidden": "block"}`}>
+      <div className={`${notepad.authorId!== userId ? "hidden": "block"}`}>
 
       <Divider height="h-10"/>
       </div>
 
       <div className="flex flex-row gap-2">
-        <button onClick={() => {handleSave()}} disabled={notepad.userId !== userId} className="bg-primary-100 disabled:hidden text-primary-text sm:hover:shadow-2xl transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-800">Save </button>
-        <button onClick={() => {handleReset()}} disabled={notepad.userId !== userId} className="bg-secondary-100 transition-all duration-200 disabled:hidden font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-900">Revert</button>
+        <button onClick={() => {handleSave()}} disabled={notepad.authorId !== userId} className="bg-primary-100 disabled:hidden text-primary-text sm:hover:shadow-2xl transition-all duration-200 font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-800">Save </button>
+        <button onClick={() => {handleReset()}} disabled={notepad.authorId !== userId} className="bg-secondary-100 transition-all duration-200 disabled:hidden font-semibold text-lg px-5 py-2 rounded-md fadeIn animation-delay-900">Revert</button>
       </div>
 
       <Divider height="h-10"/>
@@ -191,7 +198,8 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
           animationDelay="animation-delay-1000"
           type="secondary"
         >
-          <TextareaAutosize disabled={notepad.userId !== userId} ref={notepadContent} className="bg-secondary-200 max-h-screen px-2 pb-6 py-1 text-lg rounded-md focus:bg-secondary-300 duration-200 resize-none h-max" defaultValue={notepad?.content}/>
+          <p className="text-sm unobstructive">{contentLength} / 10000</p>
+          <TextareaAutosize required disabled={notepad.authorId !== userId} onChange={() => {setContentLength(notepadContent.current!.value.length)}} maxLength={10000} ref={notepadContent} className="bg-secondary-200 max-h-screen px-2 pb-6 py-1 text-lg rounded-md focus:bg-secondary-300 duration-200 resize-none h-max" defaultValue={notepad?.content}/>
         </Card>
       </div>
 
