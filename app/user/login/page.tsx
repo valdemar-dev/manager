@@ -73,7 +73,10 @@ export default function Login() {
         return showModal(2000);
       }
 
+      const notepadKey = (hashText(`${target.password.value}${process.env.NOTEPAD_SECRET}`).output).slice(0,32);
+
       localStorage.setItem("username", target.username.value);
+      localStorage.setItem("notepadKey", notepadKey);
 
       setModalText(await response.text());
       showModal(1000);

@@ -14,12 +14,17 @@ export async function GET(request: NextRequest) {
 
   const notepads = await prisma.notepad.findMany({
     where: {
-      id: session.userId,
+      authorId: session.userId,
     },
     select: {
       id: true,
-      title: false,
+      title: true,
+      titleAuthTag: true,
       content: false,
+      createdAt: true,
+      isPublic: true,
+      iv: true,
+      lastEdited: true,
     },
   }) || null;
 

@@ -258,20 +258,28 @@ export default function Account() {
 
           <p className="text-accent-100 mt-4">Premium:</p>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => {setColorscheme("protege")}} className="h-20 w-2/5  rounded-lg border-4 box-border border-purple-700 bg-neutral-950 text-neutral-50">
+            <button disabled={user?.plan !== "Premium"} onClick={() => {setColorscheme("protege")}} className="h-20 w-2/5  rounded-lg border-4 box-border border-purple-700 bg-neutral-950 text-neutral-50">
               <span className="border-b-2 border-amber-600">Protege</span>
             </button>
 
-            <button onClick={() => {setColorscheme("danger")}}  className="h-20 w-2/5 rounded-lg border-4 box-border border-red-500 bg-neutral-950 text-neutral-50">
+            <button disabled={user?.plan !== "Premium"} onClick={() => {setColorscheme("danger")}}  className="h-20 w-2/5 rounded-lg border-4 box-border border-red-500 bg-neutral-950 text-neutral-50">
               <span className="border-b-2 border-orange-500">Danger</span>
             </button>
 
-            <button onClick={() => {setColorscheme("forest")}}  className="h-20 w-2/5 rounded-lg border-4 box-border border-yellow-400 bg-emerald-950 text-neutral-50">
+            <button disabled={user?.plan !== "Premium"} onClick={() => {setColorscheme("forest")}}  className="h-20 w-2/5 rounded-lg border-4 box-border border-yellow-400 bg-emerald-950 text-neutral-50">
               <span className="border-b-2 border-blue-300">Forest</span>
             </button>
 
-            <button onClick={() => {setColorscheme("bluehour")}}  className="h-20 w-2/5 rounded-lg border-4 box-border border-sky-300 bg-slate-950 text-neutral-50">
+            <button disabled={user?.plan !== "Premium"} onClick={() => {setColorscheme("paulios")}}  className="h-20 w-2/5 rounded-lg border-4 box-border border-sky-300 bg-slate-950 text-neutral-50">
               <span className="border-b-2 border-amber-500">Paulios</span>
+            </button>
+
+            <button disabled={user?.plan !== "Premium"} onClick={() => {setColorscheme("marine")}}  className="h-20 w-2/5 rounded-lg border-4 box-border bg-sky-950 border-orange-500 text-neutral-50">
+              <span className="border-b-2 border-green-500">Marine</span>
+            </button>
+
+            <button disabled={user?.plan !== "Premium"} onClick={() => {setColorscheme("bubblegum")}}  className="h-20 w-2/5 rounded-lg border-4 box-border bg-fuchsia-100 border-violet-500 text-neutral-950">
+              <span className="border-b-2 border-violet-950">Bubblegum</span>
             </button>
           </div>
         </Card>
