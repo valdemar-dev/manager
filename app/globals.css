@@ -238,7 +238,7 @@ input[type=checkbox]::before {
   justify-content: center;
   content: "";
   border-radius: 3px;
-  background-color: var(--secondary-100);
+  background-color: var(--secondary-300);
   transition-duration: 100ms;
   transition-timing-function: ease;
   border-width: 4px;
