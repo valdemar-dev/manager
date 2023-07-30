@@ -79,7 +79,8 @@ export async function POST(request: NextRequest) {
       title: req.notepadTitle,
       content: req.notepadContent,
       authorUsername: req.authorUsername,
-    }
+      lastEdited: new Date(),
+    },
   }) || null;
 
   return new Response("Updated notepad!");
