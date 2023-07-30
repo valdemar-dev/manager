@@ -59,7 +59,8 @@ export async function POST(request: NextRequest) {
       title: req.notepadTitle,
       authorId: session.userId,
       isPublic: req.isPublic,
-      authorUsername: req.authorUsername
+      authorUsername: req.authorUsername,
+      content: "Edit me!",
     }
   });
 
