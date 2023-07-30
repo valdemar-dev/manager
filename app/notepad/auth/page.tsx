@@ -73,7 +73,7 @@ export default function NotepadAuth() {
   return (
     <>
       <h1 className="text-2xl font-semibold fadeIn animation-delay-400">Hold on!</h1>
-      <p className="flex items-center gap-2 text-lg mb-6 rounded-lg fadeIn animation-delay-800">You're about to encrypt a notepad for the first time.</p>
+      <p className="flex items-center gap-2 text-lg mb-6 rounded-lg fadeIn animation-delay-800">You might soon encrypt a notepad, but you don't have the necessary encryption keys.</p>
 
       <div className="grid md:grid-cols-2 gap-10">
         <Card
