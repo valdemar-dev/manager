@@ -43,10 +43,12 @@ export default function LayoutProvider(props: Props) {
           { props.children }
         </main>
 
-        <footer className="mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl py-12 box-border text-xs unobstructive grid grid-cols-3 auto-rows-auto gap-4 text-center">
-          <a href="/contact">Contact</a>
-          <a href="/privacy">Privacy</a>
-          <a href="/about">About</a>
+        <footer className="mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl py-12 box-border text-xs unobstructive text-center">
+          <div className="grid grid-cols-3 auto-rows-auto gap-4 mb-4">
+            <a href="/contact">Contact</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/about">About</a>
+          </div>
 
           Copyright © 2023 All Rights Reserved
         </footer>
