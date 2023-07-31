@@ -125,6 +125,15 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
     const notepadKey = localStorage.getItem("notepadKey")!;
 
     let data: any = {};
+
+    if (
+      notepadContent.current!.value.length < 1 ||
+      notepadTitle.current!.value.length < 1
+    ) {
+      setModalText("Your notepad must include a title and content.");
+      return showModal(1000);
+    }
+
     if (notepad.isPublic === false) {
       const encryptedNotepadTitle = encrypt(notepadTitle.current!.value, notepadKey, iv);
       const encryptedNotepadContent = encrypt(notepadContent.current!.value, notepadKey, iv);
@@ -161,7 +170,7 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
     
     await fetch("/api/notepad/editNotepad", options).then(async (response) => {
       setModalText(await response.text());
-      return showModal(2000);
+      return showModal(700);
     })
   }
 
@@ -175,7 +184,7 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
     <>
       <div>
         <h1 className="text-4xl font-semibold fadeIn animation-delay-400">
-          <TextareaAutosize ref={notepadTitle} className="bg-transparent overflow-hidden break-words resize-none w-full" defaultValue={notepad?.title}/>
+          <TextareaAutosize ref={notepadTitle} required minLength={1} maxLength={80} className="bg-transparent overflow-hidden break-words resize-none w-full" defaultValue={notepad?.title}/>
         </h1>
         <p className="fadeIn animation-delay-800">By: {notepad.authorUsername}</p>
       </div>
@@ -199,7 +208,7 @@ export default function NotepadEditor({ params, }: { params: { notepadId: string
           type="secondary"
         >
           <p className="text-sm unobstructive">{contentLength} / 10000</p>
-          <TextareaAutosize required disabled={notepad.authorId !== userId} onChange={() => {setContentLength(notepadContent.current!.value.length)}} maxLength={10000} ref={notepadContent} className="bg-secondary-200 max-h-screen px-2 pb-6 py-1 text-lg rounded-md focus:bg-secondary-300 duration-200 resize-none h-max" defaultValue={notepad?.content}/>
+          <TextareaAutosize required disabled={notepad.authorId !== userId} onChange={() => {setContentLength(notepadContent.current!.value.length)}} minLength={1} maxLength={10000} ref={notepadContent} className="bg-secondary-200 px-2 pb-6 py-1 text-lg rounded-md focus:bg-secondary-300 duration-200 resize-none overflow-y-hidden" defaultValue={notepad?.content}/>
         </Card>
       </div>
 

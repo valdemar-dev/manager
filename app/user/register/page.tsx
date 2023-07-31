@@ -100,21 +100,20 @@ export default function Register() {
             type="secondary"
         >
           <form onSubmit={async (event) => {await handleRegister(event)}}>
-            <span className="text-sm">3-20 characters. No spaces allowed.</span>
-            <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="username" placeholder="username"/>
+            <span className="text-sm">3-20 characters. Numbers and letters only.</span>
+            <input pattern="^[A-Za-z0-9_.]+$" minLength={3} maxLength={20} className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="username" placeholder="username"/>
             <span className="text-sm">You will need to confirm this.</span>
-            <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="email"/>
-            <span className="text-sm">At least 8 characters, 1 capital letter and 1 number.</span>
-            <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
+            <input pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="email"/>
+            <span className="text-sm">Min eight characters, one uppercase letter, and one number</span>
+            <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
 
             <p className="my-2 unobsuctive">
               Have an account already? <br/>
               <Link href="/user/login" className="text-accent font-semibold">Login</Link>
             </p>
 
+            <p className="mt-4 text-sm">By registering, you agree to our <Link href="/privacy" className="font-semibold">Privacy policy</Link></p>
             <button className="bg-primary-100 text-primary-text sm:hover:shadow-2xl transition-all duration-200 px-5 py-2 rounded-md mt-2 font-semibold" type="submit">Register</button>
-
-            <p className="mt-2 text-sm">By registering, you agree to our <Link href="/privacy" className="font-semibold">Privacy policy</Link></p>
           </form>
         </Card>
       </div>

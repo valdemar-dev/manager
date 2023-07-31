@@ -26,6 +26,9 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  const titleMaximumLength = 80;
+  const contentMaximumLength = 10000;
+
   if (req.isPublic === false) {
     if (
       !req.titleAuthTag ||
@@ -34,6 +37,19 @@ export async function POST(request: NextRequest) {
       !req.usernameAuthTag
     ) {
       return new Response("Invalid form data.", {
+        status: 422,
+      });
+    }
+
+    // encrypted content is always 2x the unencrypted length
+    if (req.notepadTitle.length === titleMaximumLength * 2) {
+      return new Response("The maximum length of the title is 80 characters.", {
+        status: 422,
+      });
+    }
+
+    if (req.notepadContent.length > contentMaximumLength * 2) {
+      return new Response("The notepads contents length must not exceed 10 thousand characters.", {
         status: 422,
       });
     }

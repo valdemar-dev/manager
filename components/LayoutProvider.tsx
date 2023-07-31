@@ -2,9 +2,9 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { Inter } from 'next/font/google'
 import { useEffect, useState } from "react";
+import { Suspense } from "react";
 import { useRouter } from "next/navigation";
 
 const inter = Inter({ subsets: ['latin'] })
@@ -14,17 +14,32 @@ interface Props {
 }
 
 export default function LayoutProvider(props: Props) {
-  const pathname = usePathname();
   const router = useRouter();
+  const pathname = usePathname();
+
 
   const [theme, setTheme] = useState("dark");
   
   useEffect(() => {
-    setTheme(localStorage.getItem("theme") || "dark");
+    const theme: any = localStorage.getItem("theme");
+    
+    // this might look a bit dodgy so ill explain
+    // dark and light are the free themes
+    // if the user is on a premium theme, we have to make sure that
+    // theyre a premium user. and if they're not (!response.ok),
+    // we set them to dark mode by default.
+    if (theme !== "dark" || theme !== "light") {
+      fetch("/api/user/getPremiumStatus").then(async (response) => {
+        if (!response.ok) return setTheme("dark");
+      });
+    }
+
+    setTheme(theme);
   }, []);
+
   
   return (
-    <html suppressHydrationWarning={true} data-theme={theme!}>
+    <html suppressHydrationWarning={true} data-theme={theme || "dark"}>
       <body className={inter.className + " " + "bg-background-color text-text"}>
         <main className="min-h-screen mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl text-text p-4 box-border">
           { pathname !== "/" &&

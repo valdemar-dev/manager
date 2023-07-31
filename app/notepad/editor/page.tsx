@@ -228,7 +228,9 @@ export default function Notepad() {
           type="secondary"
           animationDelay="animation-delay-1200"        
         >
-          {mapNotepads()}
+          <div className="mt-2 flex flex-col gap-3">
+            {mapNotepads()}
+          </div>
         </Card>
 
       </div>
