@@ -1,8 +1,5 @@
 import getSession from "@/utils/getSession";
 import { NextRequest } from "next/server";
-import fs from "fs";
-import path from "path";
-import premiumUsers from "@/premiumUsers.json";
 import prisma from "@/utils/prismaClient";
 
 export async function GET(request: NextRequest) {
@@ -13,10 +10,6 @@ export async function GET(request: NextRequest) {
     return new Response("Not logged in!", {
       status: 401,
     });
-  }
-
-  if (premiumUsers.includes(session.userId)) {
-    return new Response("Ok.");
   }
 
   const userInDb = await prisma.user.findUnique({
@@ -41,10 +34,6 @@ export async function GET(request: NextRequest) {
       status: 403,
     });
   }
-
-  //cache userid to save on database reads
-  premiumUsers.push(session.userId);
-  fs.writeFileSync(path.join(process.cwd(), "premiumUsers.json"), JSON.stringify(premiumUsers));
   
   return new Response("Ok.");
 }
