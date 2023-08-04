@@ -29,8 +29,11 @@ export default function LayoutProvider(props: Props) {
     // theyre a premium user. and if they're not (!response.ok),
     // we set them to dark mode by default.
     if (theme !== "dark" || theme !== "light") {
-      fetch("/api/user/getPremiumStatus").then(async (response) => {
-        if (!response.ok) return setTheme("dark");
+      fetch("/api/user/validatePremium").then(async (response) => {
+        if (!response.ok) {
+          setTheme("dark");
+          localStorage.setItem("theme", "dark");
+        }
       });
     }
 
@@ -60,9 +63,9 @@ export default function LayoutProvider(props: Props) {
 
         <footer className="mx-auto overflow-hidden sm:max-w-xl md:max-w-3xl lg:max-w-5xl py-12 box-border text-xs unobstructive text-center">
           <div className="grid grid-cols-3 auto-rows-auto gap-4 mb-4">
-            <a href="/contact">Contact</a>
-            <a href="/privacy">Privacy</a>
-            <a href="/about">About</a>
+            <Link href="/contact">Contact</Link>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/about">About</Link>
           </div>
 
           Copyright © 2023 All Rights Reserved

@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import crypto from "crypto";
 
 export default function Register() {
   const browser = detect();
@@ -35,28 +36,63 @@ export default function Register() {
   };
 
   useEffect(() => {
-    fetch("/api/user/getSessionList").then((response) => {
+    fetch("/api/user/sessions/getSessionList").then((response) => {
       if (response.status === 200) {
         return router.push("/dashboard");
       }
     })
   }, []);
 
+  const encrypt = (text: string, key: string,) => {
+    const iv: Buffer = crypto.randomBytes(16);
+
+    let cipher = crypto.createCipheriv("aes-256-gcm", Buffer.from(key), iv);
+
+    let encryptedText = cipher.update(text);
+    encryptedText = Buffer.concat([encryptedText, cipher.final()]);
+
+    const tag = cipher.getAuthTag();
+
+    return { encryptedText: encryptedText.toString("hex"), authTag: tag.toString("hex"), iv: iv.toString("hex") }
+  };
+
   async function handleRegister(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const target = event.target as typeof event.target & {
-      username: { value: string };
+      displayname: { value: string };
       email: { value: string };
       password: { value: string };
     }
 
+    const authKey: string = (hashText(`${target.password}${hashText(target.email.value).output}`).output).slice(0, 32);
+
+    const encryptedBrowserName = encrypt(browser?.name || "Not found.", authKey);
+    const encryptedBrowserNameFinal = `${encryptedBrowserName.iv}${encryptedBrowserName.authTag}${encryptedBrowserName.encryptedText}`;
+
+    const encryptedOs = encrypt(browser?.os || "Not found.", authKey);
+    const encryptedOsFinal = `${encryptedOs.iv}${encryptedOs.authTag}${encryptedOs.encryptedText}`;
+
+    let ip: string = "";
+    fetch("/api/getIp").then(async (response) => {
+      if (!response.ok) {
+        return;
+      }
+
+      const res = await response.json();
+      ip = res;
+    })
+
+    const encryptedIp = encrypt(ip, authKey);
+    const encryptedIpFinal = `${encryptedIp.iv}${encryptedIp.authTag}${encryptedIp.encryptedText}`;
+
     const data = {
-      username: hashText(target.username.value).output,
+      displayname: target.displayname.value,
       email: hashText(target.email.value).output,
       password: hashText(target.password.value).output,
-      browserName: browser?.name || "NULL",
-      os: browser?.os || "NULL",
+      browser: encryptedBrowserNameFinal,
+      os: encryptedOsFinal,
+      ip: encryptedIpFinal,
     };
 
     const options = {
@@ -73,7 +109,8 @@ export default function Register() {
        return showModal(2000);
       }
 
-      localStorage.setItem("username", target.username.value);
+      localStorage.setItem("username", target.displayname.value);
+      sessionStorage.setItem("authKey", authKey);
 
       setModalText(await response.text());
       showModal(1000);
@@ -100,12 +137,14 @@ export default function Register() {
             type="secondary"
         >
           <form onSubmit={async (event) => {await handleRegister(event)}}>
-            <span className="text-sm">3-20 characters. Numbers and letters only.</span>
-            <input pattern="^[A-Za-z0-9_.]+$" minLength={3} maxLength={20} className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="username" placeholder="username"/>
+            <span className="text-sm">Maximum 25 characters.</span>
+            <input maxLength={25} className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="displayname" placeholder="What should we call you?"/>
             <span className="text-sm">You will need to confirm this.</span>
-            <input pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="email"/>
+            <input pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="Your email address"/>
             <span className="text-sm">Min eight characters, one uppercase letter, and one number</span>
-            <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
+            <br/>
+            <span className="text-xs unobstructive">You won't be able to change this later!</span>
+            <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="Create a unique password!"/>
 
             <p className="my-2 unobsuctive">
               Have an account already? <br/>

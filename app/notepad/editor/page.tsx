@@ -46,7 +46,7 @@ export default function Notepad() {
       return router.push("/notepad/auth");
     }
 
-    fetch("/api/notepad/getNotepadList").then(async (response) => {
+    fetch("/api/notepad/getNotepads").then(async (response) => {
       if (!response.ok) {
         if (response.status !== 404) {
           return router.push("/user/login");

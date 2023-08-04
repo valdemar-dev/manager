@@ -14,35 +14,4 @@ export async function POST(request: NextRequest) {
 
   const req = await request.json();
 
-  if (
-    !req.notepadId
-  ) {
-    return new Response("Invalid form data.", {
-      status: 422,
-    });
-  }
-
-  const notepad = await prisma.notepad.findUnique({
-    where: {
-      id: req.notepadId,
-    },
-  }) || null;
-
-  if (!notepad) {
-    return new Response("No notepad found!", {
-      status: 404,
-    });
-  }
-
-  if (notepad.isPublic) {
-    return new Response(JSON.stringify({ notepad: notepad, userId: notepad.authorId, }));
-  }
-
-  if (notepad.isPublic === false && notepad.authorId !== session.userId) {
-    return new Response("You don't have access to this!", {
-      status: 401,
-    });
-  }
-
-  return new Response(JSON.stringify({ notepad: notepad, userId: session.userId }));
 }

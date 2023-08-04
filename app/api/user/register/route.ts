@@ -8,78 +8,57 @@ export async function POST(request: NextRequest) {
   const req = await request.json();
 
   if (
-    !req.username ||
+    !req.displayname ||
     !req.email ||
     !req.password ||
-    !req.browserName ||
-    !req.os
+    !req.browser ||
+    !req.os ||
+    !req.ip
   ) {
     return new Response("Invalid form data.", {
       status: 422,
     })
   }
 
-  const username: string = hashText(req.username).output;
-  const email: string = hashText(req.email).output;
-  const password: string = hashText(req.password).output;
-  
-  const userInDb = await prisma.user.findFirst({
-    where: {
-      OR: [
-        {
-          username: username,
-        },
-        {
-          email: email,
-        },
-      ]
-    }
-  }) || null;
-
-  if (userInDb) {
-    return new Response("A user with this username and or email address already exists!", {
-      status: 409
+  if (
+    await prisma.user.findUnique({
+      where: {
+        email: req.email,
+      },
+    }) !== null
+  ) {
+    return new Response("Account already exists!", {
+      status: 403,
     });
   }
 
+  const sessionId = crypto.randomBytes(16).toString("hex");
+  
   await prisma.user.create({
     data: {
-      username: username,
-      email: email,
-      password: password,
-    },
-  });
-
-  // handle login so the user doesnt have to register and also login
-  let userIp!: string;
-  if (request.headers.get('x-forwarded-for') !== null) {
-    userIp = request.headers.get('x-forwarded-for')?.split(',')[0] || "noIp";
-  } else if (request.headers.get('x-real-ip')) {
-    userIp = request.ip?.toString() || "noIp";
-  }
-
-  const sessionId = crypto.randomBytes(16).toString("hex");
-
-  await prisma.user.update({
-    where: {
-      username: username,
-    },
-    data: {
+      email: req.email,
+      password: req.password,
+      profile: {
+        create: {
+          displayname: req.displayname,
+        },
+      },
       sessions: {
         create: [
           {
-            id: sessionId,
-            sessionBrowser: req.browserName,
+            ip: req.ip,
+            browser: req.browser,
             os: req.os,
-            userIp: `${userIp}`,
+            id: sessionId,
           },
         ],
       },
     },
   });
 
-  const cookieStore = cookies();
-  cookieStore.set("sessionId", sessionId)
+  const cookieJar = cookies();
 
-  return new Response("Registered account!")
+  cookieJar.set("sessionId", sessionId, { secure: true, httpOnly: true, });
+
+  return new Response("Account created!");
 }

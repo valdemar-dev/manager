@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import crypto from "crypto";
 
 export default function Login() {
   const browser = detect();
@@ -35,28 +36,61 @@ export default function Login() {
   };
 
   useEffect(() => {
-    fetch("/api/user/getSessionList").then((response) => {
+    fetch("/api/user/sessions/getSessionList").then((response) => {
       if (response.status === 200) {
         return router.push("/dashboard");
       }
     })
   }, []);
 
+  const encrypt = (text: string, key: string,) => {
+    const iv: Buffer = crypto.randomBytes(16);
+
+    let cipher = crypto.createCipheriv("aes-256-gcm", Buffer.from(key), iv);
+
+    let encryptedText = cipher.update(text);
+    encryptedText = Buffer.concat([encryptedText, cipher.final()]);
+
+    const tag = cipher.getAuthTag();
+
+    return { encryptedText: encryptedText.toString("hex"), authTag: tag.toString("hex"), iv: iv.toString("hex") }
+  };
+
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const target = event.target as typeof event.target & {
-      username: { value: string };
       email: { value: string };
       password: { value: string };
     }
 
+    const authKey: string = (hashText(`${target.password}${hashText(target.email.value).output}`).output).slice(0, 32);
+
+    const encryptedBrowserName = encrypt(browser?.name || "Not found.", authKey);
+    const encryptedBrowserNameFinal = `${encryptedBrowserName.iv}${encryptedBrowserName.authTag}${encryptedBrowserName.encryptedText}`;
+
+    const encryptedOs = encrypt(browser?.os || "Not found.", authKey);
+    const encryptedOsFinal = `${encryptedOs.iv}${encryptedOs.authTag}${encryptedOs.encryptedText}`;
+
+    let ip: string = "";
+    await fetch("/api/getIp").then(async (response) => {
+      if (!response.ok) {
+        return;
+      }
+
+      const res = await response.json();
+      ip = res;
+    })
+
+    const encryptedIp = encrypt(ip, authKey);
+    const encryptedIpFinal = `${encryptedIp.iv}${encryptedIp.authTag}${encryptedIp.encryptedText}`;
+
     const data = {
-      username: hashText(target.username.value.replace(/\s/g, "")).output,
-      email: hashText(target.email.value.replace(/\s/g, "")).output,
-      password: hashText(target.password.value.replace(/\s/g, "")).output,
-      browserName: browser?.name || "NULL",
-      os: browser?.os || "NULL",
+      email: hashText(target.email.value).output,
+      password: hashText(target.password.value).output,
+      browser: encryptedBrowserNameFinal,
+      os: encryptedOsFinal,
+      ip: encryptedIpFinal,
     };
 
     const options = {
@@ -69,17 +103,14 @@ export default function Login() {
 
     await fetch("/api/user/login", options).then(async (response) => {
       if (!response.ok) {
-        setModalText(await response.text());
-        return showModal(2000);
+       setModalText(await response.text());
+       return showModal(2000);
       }
-
-      const notepadKey = (hashText(`${target.password.value}${process.env.NOTEPAD_SECRET}`).output).slice(0,32);
-
-      localStorage.setItem("username", target.username.value);
-      localStorage.setItem("notepadKey", notepadKey);
 
       setModalText(await response.text());
       showModal(1000);
+
+      sessionStorage.setItem("authKey", authKey);
 
       setTimeout(() => {
         router.push("/dashboard");
@@ -103,7 +134,6 @@ export default function Login() {
           type="secondary"
         >
           <form className="mt-2" onSubmit={async (event) => {await handleLogin(event)}}>
-            <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="text" name="username" placeholder="username"/>
             <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="email" name="email" placeholder="email"/>
             <input className="bg-secondary-200 focus:bg-secondary-300 duration-200 text-text text-lg px-3 py-1 rounded-md w-full mb-2" required type="password" name="password" placeholder="password"/>
 

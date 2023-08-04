@@ -11,102 +11,171 @@ datasource db {
 }
 
 
-// USERS
+//
+// ROOT USER
+//
 model User {
-  id                String    @id @default(uuid())
-  username          String    @unique
-  email             String    @unique
-  password          String
-  vaultEntryTotal   Int       @default(0)
-  createdAt         DateTime  @default(now())
-  role              String    @default("Member")
-  plan              String    @default("Free")
+  id              String      @id @default(uuid())
 
-  accounts Account[]
-  notepads Notepad[]
-  tasks    Task[]
-  sessions Session[]
-}
+  email           String      @unique
+  password        String      
+  tier            String      @default("Free")
+  role            String      @default("Member")
 
+  createdAt       DateTime    @default(now())
 
-//ACCOUNTS
+  profile         Profile?
 
-//users can store their account credentials from different services
-//data is encrypted first in the browser before it's sent off to the 
-//server, and also on the server side 
-model Account {
-  id                       String     @id @default(uuid())
-  accountUsername          String?
-  accountEmail             String?
-  accountService           String
-  accountPassword          String
-  iv                       String
-  usernameAuthTag          String
-  emailAuthTag             String
-  passwordAuthTag          String
-  serviceAuthTag           String
-  creationTimestamp        String
-  creationTimestampAuthTag String
+  accounts        Account[]   @relation("AccountHolders")
+  notepads        Notepad[]   @relation("NotepadAuthors")
+  projects        Project[]   @relation("ProjectCollaborators")
+  tasks           Task[]      @relation("TaskAssignedUsers")
+  contacts        Contact[]
   
-  user                     User      @relation(fields: [userId], references: [id])
-  userId                   String    
+  notifications   Notification[]
+  sessions        Session[]
 }
 
-//NOTES
+model Profile {
+  id              Int         @id @default(autoincrement())
 
-//user writes text documents and it gets saved into the /notepads directory
-//at the root directory of the project
-//metadata of the file contains the notepads id
-//when the uses first saves the notepad is creates a notepad object
-//in the postgresql database that contains the notepads id along with
-//who wrote it. this allows the user to come back and re-edit the file
-//and also lets me encrypt it and keep it hidden from everyone else
-model Notepad {
+  displayname     String
+
+  user            User        @relation(fields: [userId], references: [id])
+  userId          String      @unique
+}
+
+model Session {
+  id              String      @id
+
+  browser         String
+  os              String
+  ip              String    
+
+  createdAt       DateTime    @default(now())
+  lastUsedAt      DateTime    @default(now())
+
+  user            User        @relation(fields: [userId], references: [id])
+  userId          String    
+}
+
+model Notification {
   id              String     @id @default(uuid())
-  title           String
-  titleAuthTag    String?
-  content         String?
-  contentAuthTag  String?
-  iv              String?
-  createdAt       DateTime @default(now())
-  authorUsername  String
-  usernameAuthTag String? 
-  isPublic        Boolean @default(false)
-  lastEdited      DateTime @default(now())
 
-  author      User    @relation(fields: [authorId], references: [id])
-  authorId    String
+  title           String     
+  type            String     @default("information")
+  data            String
+
+  user            User       @relation(fields: [userId], references: [id])
+  userId          String  
+}
+//
+// VAULT
+//
+model Account {
+  id              String      @id @default(uuid())
+
+  username        String?
+  email           String?
+  service         String
+  password        String
+  isShared        Boolean     @default(false)
+
+  users           User[]      @relation("AccountHolders")
 }
 
-//TASKS
-model Task {
-  id              Int     @id @default(autoincrement())
+model Contact {
+  id              String      @id @default(uuid())
 
-  taskName        String
-  taskDescription String?
-  taskCompleteBy  DateTime?
+  name            String
+  fields          ContactFields[]
 
-  user            User    @relation(fields: [userId], references: [id])
+  user            User        @relation(fields: [userId], references: [id])
   userId          String
 }
 
+model ContactFields {
+  id              String      @id @default(uuid())
+  name            String
+  value           String
 
-//PROJECT MANAGEMENT
+  contact         Contact     @relation(fields: [contactId], references: [id])
+  contactId       String    
+}
 
 
-//CONTACTS
+//
+// NOTEPADS
+//
+model Notepad {
+  id              String      @id @default(uuid())
+
+  title           String      @default("Untitled notepad")
+  content         String?
+
+  editedAt        DateTime    @default(now())
+  createdAt       DateTime    @default(now())
+
+  users           User[]      @relation("NotepadAuthors")
+
+  project         Project?    @relation(fields: [projectId], references: [id])
+  projectId       String
+}
 
 
+//
+// TASKS
+//
+model Task {
+  id              String      @id @default(uuid())
 
-//SESSIONS
-model Session {
-  id              String    @id
-  sessionBrowser  String
-  os              String
-  userIp          String    
-  createdAt       DateTime  @default(now())
-  lastActive      DateTime  @default(now())
+  name            String      @default("Unnamed task")
+  isCompleted     Boolean     @default(false)
 
-  user            User      @relation(fields: [userId], references: [id])
-  userId          String    
+  users           User[]      @relation("TaskAssignedUsers")
+
+  completeBy      DateTime
+
+  initiative      Initiative? @relation(fields: [initiativeId], references: [id])
+  initiativeId    String
+}
+
+
+//
+// PROJECTS
+//
+model Project {
+  id              String      @id @default(uuid())
+
+  name            String      @default("Untitled Project")
+
+  notepads        Notepad[]
+  initiatives     Initiative[]
+
+  createdAt       DateTime    @default(now())
+  
+  collaborators   User[]      @relation("ProjectCollaborators")
+}
+
+model Initiative {
+  id              String      @id @default(uuid())
+
+  name            String
+
+  tasks           Task[]
+  stages          InitiativeStage[]
+
+  project         Project     @relation(fields: [projectId], references: [id])
+  projectId       String
+}
+
+model InitiativeStage {
+  id              String      @id @default(uuid())
+
+  name            String
+  description     String
+  colour          String      @default("#90EE90")
+
+  initiative      Initiative  @relation(fields: [initiativeId], references: [id])
+  initiativeId    String
 }

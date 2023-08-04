@@ -240,6 +240,24 @@ input:focus {
   outline: none;
 }
 
+
+body {
+  animation-name: fadeNoMove;
+  animation-duration: 3000ms;
+  animation-delay: 0ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeNoMove {
+  from {
+    opacity: 0%;
+  }
+
+  to {
+    opacity: 100%;
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0%;
@@ -298,4 +316,21 @@ input[type=checkbox]::before {
 
 input[type="checkbox"]:checked::before {
   background-color: var(--accent-100);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--secondary-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-300);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-400);
 }

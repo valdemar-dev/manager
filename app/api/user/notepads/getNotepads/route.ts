@@ -12,4 +12,21 @@ export async function GET(request: NextRequest) {
     });
   }
 
+  const userInDb = await prisma.user.findUnique({
+    where: {
+      id: session.userId,
+    },
+    select: {
+      notepads: true,
+      password: false,
+    },
+  }) || null;
+
+  if (!userInDb) {
+    return new Response("No user found.", {
+      status: 404,
+    });
+  }
+
+  return new Response(JSON.stringify(userInDb.notepads));
 }

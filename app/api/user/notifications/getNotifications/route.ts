@@ -1,6 +1,5 @@
 import getSession from "@/utils/getSession";
 import { NextRequest } from "next/server";
-import prisma from "@/utils/prismaClient";
 
 export async function GET(request: NextRequest) {
   const sessionId = request.cookies.get("sessionId")?.value;
@@ -12,4 +11,20 @@ export async function GET(request: NextRequest) {
     });
   }
 
+  const userInDb = await prisma.user.findUnique({
+    where: {
+      id: session.userId,
+    },
+    select: {
+      notifications: true,
+    },
+  }) || null;
+
+  if (!userInDb) {
+    return new Response("No user found.", {
+      status: 404,
+    });
+  }
+
+  return new Response(JSON.stringify(userInDb!.notifications));
 }

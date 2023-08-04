@@ -13,11 +13,18 @@ export async function GET(request: NextRequest) {
     return new Response("Not logged in!");
   }
 
-  await prisma.session.delete({
+  await prisma.session.deleteMany({
     where: {
-      id: sessionId,
+      AND: [
+        {
+          id: sessionId,
+        },
+        {
+          userId: session.userId,
+        },
+      ],
     },
   });
-
+  
   return new Response("Logged out!");
 }

@@ -14,7 +14,7 @@ const getSession = async (sessionId: string | null) => {
       id: sessionId,
     },
     data: {
-      lastActive: new Date(),
+      lastUsedAt: new Date(),
     },
   });
 

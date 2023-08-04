@@ -4,6 +4,7 @@ import prisma from "@/utils/prismaClient";
 
 export async function GET(request: NextRequest) {
   const sessionId = request.cookies.get("sessionId")?.value;
+
   const session = await getSession(sessionId || null);
 
   if (!session) {
@@ -12,4 +13,24 @@ export async function GET(request: NextRequest) {
     });
   }
 
+  const userInDb = await prisma.user.findUnique({
+    where: {
+      id: session.userId,
+    },
+    select: {
+      password: false,
+      profile: true,
+      createdAt: true,
+      tier: true,
+      role: true,
+    }
+  }) || null;
+
+  if (!userInDb) {
+    return new Response("User not found.", {
+      status: 404,
+    });
+  }
+
+  return new Response(JSON.stringify(userInDb));
 }
