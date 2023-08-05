@@ -240,24 +240,6 @@ input:focus {
   outline: none;
 }
 
-
-body {
-  animation-name: fadeNoMove;
-  animation-duration: 3000ms;
-  animation-delay: 0ms;
-  animation-fill-mode: forwards;
-}
-
-@keyframes fadeNoMove {
-  from {
-    opacity: 0%;
-  }
-
-  to {
-    opacity: 100%;
-  }
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0%;
